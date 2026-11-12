@@ -1,6 +1,6 @@
 # Dalla tesi ai rigori ⚽
 
-Gioco di rigori da browser: Bazoo, Tommy, Sicci e Cino contro Dello (col braccio ingessato).
+Gioco di rigori da browser: ognuno crea il suo giocatore (nome, numero, colore) e tira contro Dello (col braccio ingessato). Se ti chiami Dello, scegli tu chi va in porta.
 
 **Gioca qui:** https://theonlybzfx.github.io/dalla-tesi-ai-rigori/
 
@@ -24,5 +24,15 @@ Per ricaricarlo si aggiunge una voce in `ricariche.json` (ogni ricarica ha un `i
   }
 }
 ```
+
+Si può ricaricare anche per **nome + numero di maglia** (utile se non si conosce il codice):
+
+```json
+"giocatori": {
+  "tommy#10": { "ricariche": [ { "id": "tommy10-1", "importo": 100, "ts": "2026-11-12T16:30:00Z" } ] }
+}
+```
+
+La ricarica per nome vale solo sui dispositivi già esistenti al momento `ts` (così un telefono nuovo con lo stesso nome non riceve le ricariche vecchie).
 
 Il gioco controlla il file all'apertura e ogni 20 secondi: la ricarica arriva da sola.

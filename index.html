@@ -110,6 +110,26 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .namebox input{width:100%;height:56px;border-radius:14px;border:2px solid var(--line);background:#0c1730;color:#fff;font:700 24px 'Barlow Condensed',sans-serif;text-align:center;margin-bottom:14px;outline:none}
 .namebox input:focus{border-color:var(--acc)}
 .foot b{color:#9fb2d8;letter-spacing:2px}
+.chip .edit{font-size:13px;color:var(--mut);font-weight:600;margin-left:4px}
+.chip.vs{border-style:dashed;color:var(--mut);font-weight:600;cursor:default}.chip.vs b{color:#ffb27a;margin-left:4px}
+.namebox{align-items:flex-start;overflow-y:auto}
+.pf{width:100%;max-width:380px;margin:auto 0;padding:10px 0 24px}
+.pf h2.nm{font-size:clamp(46px,13vw,64px)!important}
+.pfl{display:block;text-align:left;font-size:12px;letter-spacing:2px;color:var(--mut);font-weight:700;text-transform:uppercase;margin:4px 0 5px 4px}
+.namebox input{margin-bottom:10px!important;height:52px!important}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}
+.swatches button{aspect-ratio:1;border-radius:50%;border:3px solid rgba(255,255,255,.15);box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.swatches button.on{border-color:#fff;transform:scale(1.12);box-shadow:0 0 0 3px var(--acc)}
+.shirt{width:120px;height:104px;margin:4px auto 14px;border-radius:22px 22px 14px 14px;background:#1f56d6;color:#fff;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  clip-path:polygon(22% 0,78% 0,100% 18%,88% 38%,82% 32%,82% 100%,18% 100%,18% 32%,12% 38%,0 18%);transition:background .2s}
+.shirt span{font-weight:800;font-size:13px;letter-spacing:1px;margin-top:14px;max-width:70px;overflow:hidden;white-space:nowrap}
+.shirt b{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:44px;line-height:.9}
+.pferr{min-height:20px;color:#ff8a96;font-weight:700;font-size:15px;margin-bottom:4px}
+.pfnote{margin-top:12px;font-size:13px;color:#7183a8;line-height:1.35}
+.keepers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.keepers button{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Bebas Neue',Impact,sans-serif;font-size:28px;letter-spacing:2px}
+.keepers button i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:22px;border:3px solid rgba(255,255,255,.8)}
+.keepers button:active{transform:scale(.97)}
 @keyframes bkPulse{50%{transform:scale(1.06);box-shadow:0 6px 0 #9a7000,0 0 0 10px rgba(255,207,63,.15)}}
 .foot{text-align:center;font-size:11px;color:#5c6d92;margin-top:8px;letter-spacing:.5px}
 @media (max-height:700px){
@@ -139,10 +159,10 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 
     <div id="setup">
       <div class="row"><span class="lbl">Modalità</span><div class="seg" id="modes"></div></div>
-      <div class="row"><span class="lbl">Chi tira</span><div class="chips" id="shooters"></div></div>
+      <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v3</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v4</div>
     </div>
 
     <div id="aim" class="hide">
@@ -176,12 +196,27 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 </div>
 
 <div id="nameBox" class="broke namebox hide">
-  <form class="bk-in" id="nameForm">
-    <div class="bk-emoji">⚽</div>
-    <h2 class="nm">CHI SEI?</h2>
-    <p>Scrivi il tuo nome per entrare in campo</p>
-    <input id="nameIn" maxlength="20" autocomplete="off" placeholder="Il tuo nome">
-    <button class="big" type="submit">ENTRA IN CAMPO</button>
+  <form class="bk-in pf" id="nameForm" autocomplete="off">
+    <div id="pfStep1">
+      <h2 class="nm">CHI SEI?</h2>
+      <p>Crea il tuo giocatore</p>
+      <div class="shirt" id="pfShirt"><span id="pfShirtName">NOME</span><b id="pfShirtNum">10</b></div>
+      <label class="pfl">Nome</label>
+      <input id="nameIn" maxlength="14" placeholder="Il tuo nome">
+      <label class="pfl">Numero di maglia</label>
+      <input id="numIn" type="number" inputmode="numeric" min="1" max="99" placeholder="1-99">
+      <label class="pfl">Colore di maglia</label>
+      <div class="swatches" id="swatches"></div>
+      <div class="pferr" id="pfErr"></div>
+      <button class="big" type="submit">ENTRA IN CAMPO</button>
+      <div class="pfnote">Nome e numero servono a Bazoo per riconoscerti.<br>Se qualcuno ha già il tuo nome, scegli un numero diverso.</div>
+    </div>
+    <div id="pfStep2" class="hide">
+      <div class="bk-emoji">🧤</div>
+      <h2 class="nm">OK DELLO,<br>SCEGLI IL TUO PORTIERE</h2>
+      <p>Stavolta tiri tu: chi va in porta?</p>
+      <div class="keepers" id="keepers"></div>
+    </div>
   </form>
 </div>
 
@@ -189,13 +224,32 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 (()=>{
 'use strict';
 /* ================== DATI ================== */
-const SHOOTERS=[
-  {name:'BAZOO',num:15, jersey:'#1f56d6',trim:'#ffffff',shorts:'#ffffff',socks:'#1f56d6',skin:'#e7b089',hair:'#2a1a12',style:'short'},
-  {name:'TOMMY',num:10,jersey:'#d92a2a',trim:'#ffffff',shorts:'#151515',socks:'#d92a2a',skin:'#f2c7a1',hair:'#e6c25a',style:'flow'},
-  {name:'SICCI',num:67, jersey:'#f6c915',trim:'#141414',shorts:'#141414',socks:'#f6c915',skin:'#c88b5e',hair:'#3a2316',style:'curly'},
-  {name:'CINO', num:29,jersey:'#7b3be6',trim:'#ffffff',shorts:'#ffffff',socks:'#7b3be6',skin:'#a46d47',hair:'#0f0f0f',style:'buzz'},
-];
-const KEEPER={name:'DELLO',jersey:'#ff6a13',dark:'#c94a00',shorts:'#151515',socks:'#ff6a13',skin:'#e8b88e',hair:'#4a2b16',glove:'#e4ff3a'};
+/* personaggi conosciuti: aspetto quando giocano o quando vanno in porta */
+const PEOPLE={
+  bazoo:{name:'BAZOO',num:15,jersey:'#1f56d6',skin:'#e7b089',hair:'#2a1a12',style:'short',kit:'#ff2d87'},
+  tommy:{name:'TOMMY',num:10,jersey:'#d92a2a',skin:'#f2c7a1',hair:'#e6c25a',style:'flow', kit:'#00b8d9'},
+  sicci:{name:'SICCI',num:67,jersey:'#f6c915',skin:'#c88b5e',hair:'#3a2316',style:'curly',kit:'#8b5cf6'},
+  cino: {name:'CINO', num:29,jersey:'#7b3be6',skin:'#a46d47',hair:'#0f0f0f',style:'buzz', kit:'#facc15'},
+  dello:{name:'DELLO',num:1, jersey:'#ff6a13',skin:'#e8b88e',hair:'#4a2b16',style:'short',kit:'#ff6a13',cast:true,beard:true},
+};
+const KEEPER_CHOICES=['bazoo','tommy','sicci','cino'];
+const COLORS=['#1f56d6','#0ea5e9','#d92a2a','#7f1d1d','#ff6a13','#f6c915','#16a34a','#14b8a6','#7b3be6','#ec4899','#111827','#f2f2f2'];
+const SKINS=['#f2c7a1','#e7b089','#d39a6e','#c88b5e','#a46d47','#7a4a2e'],HAIRS=['#2a1a12','#0f0f0f','#4a2b16','#6b3e1f','#e6c25a','#9a5b2b'],STYLES=['short','flow','curly','buzz'];
+const normName=n=>String(n||'').trim().toLowerCase().replace(/\s+/g,' ');
+const isDello=n=>normName(n)==='dello';
+function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255;}
+function hashStr(t){let h=2166136261;for(const c of t){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
+let PROFILE=null, PLAYER=null, KEEPER=null;
+function buildChars(){
+  const pr=PROFILE||{name:'?',num:10,color:COLORS[0]};const key=normName(pr.name),known=PEOPLE[key],h=hashStr(key||'x');
+  const light=lum(pr.color)>.62;
+  PLAYER={name:String(pr.name).toUpperCase(),num:pr.num,jersey:pr.color,trim:light?'#141414':'#ffffff',shorts:light?'#141414':'#ffffff',socks:pr.color,
+    skin:known?known.skin:SKINS[h%SKINS.length],hair:known?known.hair:HAIRS[(h>>4)%HAIRS.length],style:known?known.style:STYLES[(h>>8)%STYLES.length],cast:!!(known&&known.cast)};
+  const k=isDello(pr.name)?PEOPLE[KEEPER_CHOICES.includes(pr.keeper)?pr.keeper:'bazoo']:PEOPLE.dello;
+  KEEPER={name:k.name,num:k.num,jersey:k.kit,dark:shade(k.kit,-.28),shorts:'#151515',socks:k.kit,skin:k.skin,hair:k.hair,style:k.style,glove:'#e4ff3a',cast:!!k.cast,beard:!!k.beard,
+    ink:lum(k.kit)>.55?'#161616':'#ffffff'};
+}
+const KN=()=>KEEPER.name.charAt(0)+KEEPER.name.slice(1).toLowerCase();
 const MODES={
   soft:  {label:'SOFT',  p:0.80},
   medium:{label:'MEDIUM',p:2/3},
@@ -225,8 +279,11 @@ function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 /* ================== STATO ================== */
 const st={bal:10000,mode:'medium',shooter:-1,bet:100,streak:0,state:'setup',shots:0};
 const KEY='rigori-dello-v1';
-let DEV='',NAME='',applied=[];
+let DEV='',NAME='',applied=[],BORN=0;
 try{DEV=localStorage.getItem(KEY+'-dev')||'';NAME=localStorage.getItem(KEY+'-name')||'';applied=JSON.parse(localStorage.getItem(KEY+'-ric')||'[]');if(!Array.isArray(applied))applied=[];}catch(e){}
+try{PROFILE=JSON.parse(localStorage.getItem(KEY+'-profile')||'null');if(!PROFILE||!PROFILE.name||!COLORS.includes(PROFILE.color)||!(PROFILE.num>=1&&PROFILE.num<=99))PROFILE=null;}catch(e){PROFILE=null;}
+try{BORN=+localStorage.getItem(KEY+'-born')||0;if(!BORN){BORN=Date.now();localStorage.setItem(KEY+'-born',String(BORN));}}catch(e){BORN=Date.now();}
+if(PROFILE)NAME=PROFILE.name;
 if(!/^[A-Z2-9]{5}$/.test(DEV)){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';DEV='';const u=new Uint32Array(5);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<5;i++)u[i]=Math.random()*1e9}for(let i=0;i<5;i++)DEV+=A[u[i]%A.length];try{localStorage.setItem(KEY+'-dev',DEV)}catch(e){}}
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ if(Number.isFinite(s.bal)) st.bal=Math.max(0,Math.floor(s.bal)); if(MODES[s.mode]) st.mode=s.mode; if(s.shooter>=-1&&s.shooter<4) st.shooter=s.shooter; if(BETS.includes(s.bet)) st.bet=s.bet; }}catch(e){}
 let savedRound=null;
@@ -406,6 +463,13 @@ function keeperPose(now){
 }
 function handsWorld(k){const hx=(k.h[0][0]+k.h[1][0])/2,hy=(k.h[0][1]+k.h[1][1])/2,c=Math.cos(k.rot),s=Math.sin(k.rot);return{x:k.x+hx*c-hy*s,y:k.y+hx*s+hy*c};}
 
+function drawKeeperHair(K,hy){const hc=K.hair;ctx.fillStyle=hc;
+  if(K.style==='flow'){ctx.beginPath();ctx.moveTo(-7.4,hy+3);ctx.quadraticCurveTo(-8.6,hy-9.5,0,hy-8.8);ctx.quadraticCurveTo(8.6,hy-9.5,7.4,hy+3);ctx.lineTo(6.2,hy+2);ctx.quadraticCurveTo(6.4,hy-3,3,hy-3.6);ctx.quadraticCurveTo(-1,hy-2,-5,hy-3.4);ctx.quadraticCurveTo(-6.4,hy-2,-6.2,hy+2);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(-3,hy-7.5);ctx.quadraticCurveTo(-5,hy-5,-5.5,hy-1);ctx.stroke();}
+  else if(K.style==='curly'){for(let a=0;a<11;a++){const an=Math.PI*(1.02+a/10*.96);circ(Math.cos(an)*6.4,hy-2.2+Math.sin(an)*6.6,2.1,a%2?hc:shade(hc,.12));}ctx.fillStyle=hc;ctx.beginPath();ctx.ellipse(0,hy-4.4,6,3.6,0,Math.PI,TAU);ctx.fill();}
+  else if(K.style==='buzz'){ctx.globalAlpha*=.9;ctx.beginPath();ctx.ellipse(0,hy-3.2,6.5,4.6,0,Math.PI,TAU);ctx.lineTo(6.3,hy-1.5);ctx.quadraticCurveTo(0,hy-4,-6.3,hy-1.5);ctx.closePath();ctx.fill();ctx.globalAlpha/=.9;}
+  else{ctx.beginPath();ctx.ellipse(0,hy-3.6,6.8,4.6,0,Math.PI,TAU);ctx.lineTo(6.6,hy-1);ctx.quadraticCurveTo(3,hy-4.2,-1,hy-3.2);ctx.quadraticCurveTo(-5,hy-2.8,-6.6,hy-1);ctx.closePath();ctx.fill();}
+}
 function drawKeeper(k,alpha){
   const K=KEEPER;alpha=alpha??1;
   if(alpha===1){const air=clamp((GL.bot-(k.y+30))/60,0,1),lying=Math.abs(k.rot)>.4;
@@ -427,16 +491,16 @@ function drawKeeper(k,alpha){
   ctx.beginPath();ctx.moveTo(-9,-27.5);ctx.quadraticCurveTo(0,-25.5,9,-27.5);ctx.quadraticCurveTo(14.5,-26.5,14.5,-20);ctx.lineTo(11,3);ctx.quadraticCurveTo(0,4.5,-11,3);ctx.lineTo(-14.5,-20);ctx.quadraticCurveTo(-14.5,-26.5,-9,-27.5);ctx.closePath();
   ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=.6;ctx.stroke();
   ctx.save();ctx.clip();ctx.strokeStyle=K.dark;ctx.lineWidth=2.2;for(let i=-3;i<4;i++){ctx.beginPath();ctx.moveTo(-16+i*7,6);ctx.lineTo(-4+i*7,-30);ctx.stroke();}ctx.restore();
-  ctx.fillStyle='#161616';ctx.font='12px "Bebas Neue",Impact,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('1',0,-14);
-  ctx.strokeStyle='#161616';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(-4,-27);ctx.lineTo(0,-23);ctx.lineTo(4,-27);ctx.stroke();
+  ctx.fillStyle=K.ink;ctx.font='12px "Bebas Neue",Impact,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(K.num),0,-14);
+  ctx.strokeStyle=K.ink;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(-4,-27);ctx.lineTo(0,-23);ctx.lineTo(4,-27);ctx.stroke();
   // collo + testa
   part([0,-29],[0,-24],5.5,6,K.skin);
   const hy=-34;
   circ(-6.6,hy+.5,1.7,shade(K.skin,-.08));circ(6.6,hy+.5,1.7,shade(K.skin,-.08));
   const hg=ctx.createRadialGradient(-2,hy-3,1,0,hy,9);hg.addColorStop(0,shade(K.skin,.12));hg.addColorStop(1,shade(K.skin,-.12));
   ctx.beginPath();ctx.ellipse(0,hy,6.3,7.6,0,0,TAU);ctx.fillStyle=hg;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=.5;ctx.stroke();
-  ctx.fillStyle='rgba(60,35,20,.18)';ctx.beginPath();ctx.ellipse(0,hy+4.2,5.2,3.4,0,0,Math.PI);ctx.fill();          // barba corta
-  ctx.fillStyle=K.hair;ctx.beginPath();ctx.ellipse(0,hy-3.6,6.8,4.6,0,Math.PI,TAU);ctx.lineTo(6.6,hy-1);ctx.quadraticCurveTo(3,hy-4.2,-1,hy-3.2);ctx.quadraticCurveTo(-5,hy-2.8,-6.6,hy-1);ctx.closePath();ctx.fill();
+  if(K.beard){ctx.fillStyle='rgba(60,35,20,.18)';ctx.beginPath();ctx.ellipse(0,hy+4.2,5.2,3.4,0,0,Math.PI);ctx.fill();}
+  drawKeeperHair(K,hy);
   // viso
   const ey=hy-.6;
   for(const sx of[-2.4,2.4]){ell(sx,ey,1.35,.95,'#fff');circ(sx+(k.face==='effort'?0:.15),ey,.62,'#2b1a0e');}
@@ -455,7 +519,7 @@ function drawKeeper(k,alpha){
   // braccia: sinistra (schermo) col guanto, destra col GESSO
   for(let i=0;i<2;i++){const sh=[i?12:-12,-23],J=ik(sh,k.h[i],14,14,i?1:-1),el=J.k,hd=J.e;
     part(sh,el,8,7,K.jersey);
-    if(i===0){part(el,hd,7,6,K.jersey);
+    if(i===0||!K.cast){part(el,hd,7,6,K.jersey);
       const an=Math.atan2(hd[1]-el[1],hd[0]-el[0]);ctx.save();ctx.translate(hd[0],hd[1]);ctx.rotate(an);
       rr(-1,-4.6,9.5,9.2,3.6);ctx.fillStyle=K.glove;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=.6;ctx.stroke();
       ctx.fillStyle='#1d1d1d';ctx.fillRect(-1,-4.4,2.6,8.8);ctx.strokeStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.moveTo(3,-1.5);ctx.lineTo(8,-1.5);ctx.moveTo(3,1.5);ctx.lineTo(8,1.5);ctx.stroke();ctx.restore();}
@@ -515,7 +579,7 @@ function drawBootBack(f,kn,S,sole,far){const sc=1-far*.35;ctx.save();ctx.transla
   else{ctx.scale(sc,sc);rr(-5,-3.5,10,7,3);ctx.fillStyle='#1b1b1b';ctx.fill();ctx.fillStyle=S.trim==='#141414'?'#f6c915':'#ffffff';ctx.fillRect(-4.6,-.5,9.2,1.3);}
   ctx.restore();}
 function drawShooter(p){
-  const Sx=SHOOTERS[p.idx],b=p.base;
+  const Sx=PLAYER,b=p.base;
   ctx.save();ctx.translate(b.x,b.y);ctx.scale(b.sc,b.sc);
   ell(0,3,30,7,'rgba(0,0,0,.3)');
   ctx.translate(0,p.lift);ctx.rotate(p.lean);
@@ -536,7 +600,7 @@ function drawShooter(p){
   ctx.fillStyle=jg;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=.6;ctx.stroke();
   ctx.save();ctx.clip();ctx.strokeStyle='rgba(0,0,0,.08)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(0,-110);ctx.lineTo(0,-73);ctx.moveTo(-12,-80);ctx.quadraticCurveTo(-6,-86,-14,-95);ctx.moveTo(12,-80);ctx.quadraticCurveTo(6,-86,14,-95);ctx.stroke();ctx.restore();
   ctx.fillStyle=Sx.trim;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font='800 7.5px "Barlow Condensed",sans-serif';ctx.fillText(Sx.name,0,-102);
+  {let fs=7.5;ctx.font=`800 ${fs}px "Barlow Condensed",sans-serif`;const w=ctx.measureText(Sx.name).width;if(w>30){fs=Math.max(4.5,fs*30/w);ctx.font=`800 ${fs}px "Barlow Condensed",sans-serif`;}ctx.fillText(Sx.name,0,-102);}
   ctx.font='22px "Bebas Neue",Impact,sans-serif';ctx.fillText(String(Sx.num),0,-87);
   // collo, orecchie, testa
   part([0,-117],[0,-110],8,9,Sx.skin);
@@ -563,7 +627,9 @@ function drawShooter(p){
     part(sh,A.e,7.4,6,Sx.skin);
     part(sh,lerpP(sh,A.e,.55),10,9,Sx.jersey);
     band(sh,A.e,.5,8.6,Sx.trim,1.4);
-    part(A.e,A.h,5.8,4.6,Sx.skin);circ(A.h[0],A.h[1],3.3,Sx.skin);}
+    if(Sx.cast&&i===1){const a1=[A.h[0]+(A.h[0]-A.e[0])*.12,A.h[1]+(A.h[1]-A.e[1])*.12];part(lerpP(A.e,A.h,.1),a1,7.6,7,'#f3f1ea');
+      ctx.save();capPath(lerpP(A.e,A.h,.1),a1,7.6,7);ctx.clip();for(const[c,tt]of[['#e23b3b',.3],['#2f6fe0',.55],['#1ea05a',.78]]){const pt=lerpP(A.e,A.h,tt);ctx.strokeStyle=c;ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(pt[0]-3,pt[1]-1);ctx.quadraticCurveTo(pt[0],pt[1]+2,pt[0]+3,pt[1]-1.5);ctx.stroke();}ctx.restore();}
+    else{part(A.e,A.h,5.8,4.6,Sx.skin);circ(A.h[0],A.h[1],3.3,Sx.skin);}}
   ctx.restore();
 }
 
@@ -636,10 +702,9 @@ function draw(now){
   if(b.layer==='front')drawBall(b);
   drawRings(now);
   drawShooter(shooterPose(now));
-  pill(8,8,'🧤 DELLO · COL GESSO','rgba(5,10,25,.72)','#ffb27a');
+  pill(8,8,KEEPER.cast?'🧤 DELLO · COL GESSO':'🧤 IN PORTA: '+KEEPER.name,'rgba(5,10,25,.72)','#ffb27a');
   const m=MODES[st.mode];pill(W-8,8,m.label,st.mode==='hard'?'#ff4d5e':st.mode==='medium'?'#ffcf3f':'#c6ff3d','#0b1020','right');
-  const sIdx=scene.plan&&now-scene.t0<=T_RESET?scene.plan.shooter:curShooter();
-  pill(8,H-28,'⚽ TIRA: '+SHOOTERS[sIdx].name,'rgba(5,10,25,.72)','#fff');
+  pill(8,H-28,'⚽ TIRA: '+PLAYER.name+' '+PLAYER.num,'rgba(5,10,25,.72)','#fff');
   if(st.streak>0&&st.state!=='setup')pill(W-8,H-28,'🔥 '+st.streak+' DI FILA','rgba(5,10,25,.72)','#c6ff3d','right');
   drawBanner(now);drawConfetti();
 }
@@ -681,14 +746,14 @@ function makePlan(z,now){
 }
 
 function onImpact(P,now){
-  const name=SHOOTERS[P.shooter].name;
+  const name=PLAYER.name,kn=KN();
   if(P.res==='goal'){
     sfx.net();sfx.goal();vibrate([30,40,60]);scene.bulge={x:P.Bn.x,y:P.Bn.y,t0:now};scene.crowdT=now;
-    const next=st.streak+1;const sub=P.variant==='slip'?'Dello la sfiora!':P.variant==='tunnel'?'Tunnel a Dello!':`${name} non perdona · ${fmtX(mult(st.mode,next))}`;
+    const next=st.streak+1;const sub=P.variant==='slip'?`${kn} la sfiora!`:P.variant==='tunnel'?`Tunnel a ${kn}!`:`${name} non perdona · ${fmtX(mult(st.mode,next))}`;
     scene.banner={title:next>=MAXGOALS?'10 SU 10!':'GOOOL!',sub,col:'#c6ff3d',t0:now,dur:1500};
     if(next<MAXGOALS)burst(26);
-  }else if(P.res==='catch'){sfx.save();vibrate(120);scene.banner={title:'PARATA!',sub:rnd()<.5?'Dello la blocca… col gesso!':'Dello la blocca',col:'#ff6a13',t0:now,dur:1500};}
-  else if(P.res==='parry'){sfx.save();vibrate(120);scene.banner={title:'RESPINTA!',sub:'Dello vola e la respinge!',col:'#ff6a13',t0:now,dur:1500};}
+  }else if(P.res==='catch'){sfx.save();vibrate(120);scene.banner={title:'PARATA!',sub:KEEPER.cast&&rnd()<.5?'Dello la blocca… col gesso!':`${kn} la blocca`,col:'#ff6a13',t0:now,dur:1500};}
+  else if(P.res==='parry'){sfx.save();vibrate(120);scene.banner={title:'RESPINTA!',sub:`${kn} vola e la respinge!`,col:'#ff6a13',t0:now,dur:1500};}
   else if(P.res==='post'){sfx.post();vibrate([60,40,60]);scene.shake={t0:now,side:P.z-1};scene.banner={title:'PALO!',sub:'Che sfortuna…',col:'#ffffff',t0:now,dur:1500};}
   else{sfx.post();vibrate([60,40,60]);scene.shake={t0:now,side:0};scene.banner={title:'TRAVERSA!',sub:'Di un soffio',col:'#ffffff',t0:now,dur:1500};}
 }
@@ -701,7 +766,7 @@ function finish(P){
     st.state='aim';
   }else{
     sfx.lose();
-    showStrip(`Hai perso ${fmt(st.bet)}. Dello ti ha fermato al ${st.streak+1}° rigore.`,'lose');
+    showStrip(`Hai perso ${fmt(st.bet)}. ${KN()} ti ha fermato al ${st.streak+1}° rigore.`,'lose');
     st.streak=0;st.state='setup';savedRound=null;save();
     if(st.bal<MINBET)setTimeout(showBroke,1300);
   }
@@ -736,14 +801,17 @@ function cashout(jackpot){
     showStrip(`💰 Hai incassato ${fmt(win)} dopo ${st.streak} gol (${fmtX(m)})`,'win');}
   st.streak=0;st.state='setup';savedRound=null;save();updateUI();
 }
-function callText(){return `Bazoo aiuto! 😭 Ho perso tutto a "Dalla tesi ai rigori". Ricaricami 100 €! Sono ${NAME||'?'} – codice dispositivo: ${DEV}`;}
+function callText(){return `Bazoo aiuto! 😭 Ho perso tutto a "Dalla tesi ai rigori". Ricaricami 100 €! Sono ${PROFILE?PROFILE.name+' (n° '+PROFILE.num+')':'?'} – codice dispositivo: ${DEV}`;}
 function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').textContent=fmt(st.bal);$('bkCode').textContent=DEV;
   $('callBazoo').href='https://wa.me/?text='+encodeURIComponent(callText());$('broke').classList.remove('hide');sfx.lose();}
 /* ---- ricariche da Bazoo (file ricariche.json nel repository) ---- */
 async function checkRecharges(){
   try{const r=await fetch('ricariche.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
-    const d=j&&j.dispositivi&&j.dispositivi[DEV];if(!d||!Array.isArray(d.ricariche))return;let tot=0;
-    for(const x of d.ricariche){if(x&&typeof x.id==='string'&&!applied.includes(x.id)&&Number.isFinite(x.importo)&&x.importo>0&&x.importo<=100000000){applied.push(x.id);tot+=Math.round(x.importo*100);}}
+    let tot=0;const ok=x=>x&&typeof x.id==='string'&&!applied.includes(x.id)&&Number.isFinite(x.importo)&&x.importo>0&&x.importo<=100000000;
+    const d=j&&j.dispositivi&&j.dispositivi[DEV];
+    if(d&&Array.isArray(d.ricariche))for(const x of d.ricariche)if(ok(x)){applied.push(x.id);tot+=Math.round(x.importo*100);}
+    const g=PROFILE&&j&&j.giocatori&&j.giocatori[normName(PROFILE.name)+'#'+PROFILE.num];
+    if(g&&Array.isArray(g.ricariche))for(const x of g.ricariche)if(ok(x)&&Date.parse(x.ts||'')>=BORN){applied.push(x.id);tot+=Math.round(x.importo*100);}
     if(tot>0){st.bal+=tot;try{localStorage.setItem(KEY+'-ric',JSON.stringify(applied))}catch(e){}save();
       $('broke').classList.add('hide');bumpBal('up');sfx.cash();burst(160,true);
       scene.banner={title:'RICARICA!',sub:`Bazoo ti ha mandato ${fmt(tot)}`,col:'#ffcf3f',t0:performance.now(),dur:3000};
@@ -752,14 +820,11 @@ async function checkRecharges(){
 }
 
 /* ================== UI ================== */
-const modesEl=$('modes'),shEl=$('shooters'),betsEl=$('bets'),ladderEl=$('ladder');
+const modesEl=$('modes'),betsEl=$('bets'),ladderEl=$('ladder');
 function buildStatic(){
   modesEl.innerHTML=Object.keys(MODES).map(k=>`<button data-m="${k}"><b>${MODES[k].label}</b><small>gol ${Math.round(MODES[k].p*100)}%<br>max ${fmtX(mult(k,MAXGOALS))}</small></button>`).join('');
-  shEl.innerHTML=`<button class="chip" data-s="-1"><span class="dot" style="background:conic-gradient(${SHOOTERS.map((s,i)=>`${s.jersey} ${i*25}% ${(i+1)*25}%`).join(',')})">↻</span>A TURNO</button>`+
-    SHOOTERS.map((s,i)=>`<button class="chip" data-s="${i}"><span class="dot" style="background:${s.jersey};color:${s.trim}">${s.num}</span>${s.name}</button>`).join('');
   betsEl.innerHTML=BETS.map(c=>`<button class="chip" data-b="${c}">${fmtBet(c)}</button>`).join('');
   modesEl.onclick=e=>{const b=e.target.closest('button');if(!b||st.state!=='setup')return;st.mode=b.dataset.m;sfx.click();save();updateUI();};
-  shEl.onclick=e=>{const b=e.target.closest('button');if(!b||st.state!=='setup')return;st.shooter=+b.dataset.s;sfx.click();save();updateUI();};
   betsEl.onclick=e=>{const b=e.target.closest('button');if(!b||st.state!=='setup')return;st.bet=+b.dataset.b;sfx.click();save();updateUI();};
   $('play').onclick=startGame;
   $('cash').onclick=()=>cashout(false);
@@ -777,7 +842,6 @@ function updateUI(){
   const setup=st.state==='setup';
   $('setup').classList.toggle('hide',!setup);$('aim').classList.toggle('hide',setup);
   modesEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===st.mode));
-  shEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.s===st.shooter));
   betsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.b===st.bet));
   const play=$('play');
   if(st.bal<st.bet){play.disabled=true;play.textContent=st.bal>=MINBET?'PUNTA DI MENO':'SALDO FINITO';}else{play.disabled=false;play.textContent='GIOCA '+fmtBet(st.bet);}
@@ -817,11 +881,36 @@ buildStatic();updateUI();resize();
 if(st.state==='aim'&&st.streak>=MAXGOALS){cashout(true);}
 else if(st.state==='aim'&&st.streak>0)showStrip(`Partita ripresa: ${st.streak} gol di fila, puoi tirare o incassare`,'win');
 else if(st.state==='aim')showStrip('Partita ripresa: tocca a te tirare','win');
-function setWho(){$('who').textContent=NAME?('GIOCATORE: '+NAME.toUpperCase()):'SEGNA 10 DI FILA · INCASSA QUANDO VUOI';$('devCode').textContent=DEV;}
-setWho();
-if(!NAME){$('nameBox').classList.remove('hide');setTimeout(()=>{try{$('nameIn').focus()}catch(e){}},300);}
-$('nameForm').addEventListener('submit',e=>{e.preventDefault();const v=$('nameIn').value.trim().replace(/\s+/g,' ').slice(0,20);if(!v){$('nameIn').focus();return;}
-  NAME=v;try{localStorage.setItem(KEY+'-name',NAME)}catch(e){}$('nameBox').classList.add('hide');setWho();ac();sfx.click();});
+function setWho(){
+  $('who').textContent=PROFILE?('GIOCATORE: '+PLAYER.name+' '+PLAYER.num):'SEGNA 10 DI FILA · INCASSA QUANDO VUOI';$('devCode').textContent=DEV;
+  $('meDot').textContent=PLAYER.num;$('meDot').style.background=PLAYER.jersey;$('meDot').style.color=PLAYER.trim;$('meName').textContent=PLAYER.name;$('vsName').textContent=KEEPER.name;}
+let pfColor=null,pfTouched=false;
+function pfPreview(){const n=$('nameIn').value.trim().toUpperCase()||'NOME',num=$('numIn').value||'?';const sh=$('pfShirt');
+  sh.style.background=pfColor;const c=lum(pfColor)>.62?'#141414':'#fff';sh.style.color=c;$('pfShirtName').textContent=n;$('pfShirtNum').textContent=num;
+  $('swatches').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.c===pfColor));}
+function openProfile(){
+  $('swatches').innerHTML=COLORS.map(c=>`<button type="button" data-c="${c}" style="background:${c}" aria-label="colore"></button>`).join('');
+  $('keepers').innerHTML=KEEPER_CHOICES.map(k=>{const p=PEOPLE[k];return`<button type="button" data-k="${k}"><i style="background:${p.kit};color:${lum(p.kit)>.55?'#161616':'#fff'}">🧤</i>${p.name}</button>`;}).join('');
+  $('nameIn').value=PROFILE?PROFILE.name:(NAME||'');$('numIn').value=PROFILE?PROFILE.num:'';pfColor=PROFILE?PROFILE.color:COLORS[(hashStr(String(Math.random()))%COLORS.length)];pfTouched=!!PROFILE;
+  $('pfErr').textContent='';$('pfStep1').classList.remove('hide');$('pfStep2').classList.add('hide');$('nameBox').classList.remove('hide');pfPreview();
+  setTimeout(()=>{try{if(!PROFILE)$('nameIn').focus()}catch(e){}},300);}
+$('swatches').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;pfColor=b.dataset.c;pfTouched=true;pfPreview();sfx.click();});
+$('nameIn').addEventListener('input',()=>{const k=PEOPLE[normName($('nameIn').value)];if(k&&!pfTouched&&!isDello($('nameIn').value)){$('numIn').value=k.num;pfColor=k.jersey;}pfPreview();});
+$('numIn').addEventListener('input',()=>{pfTouched=true;pfPreview();});
+let pfPending=null;
+function saveProfile(pr){PROFILE=pr;NAME=pr.name;try{localStorage.setItem(KEY+'-profile',JSON.stringify(PROFILE));localStorage.setItem(KEY+'-name',NAME)}catch(e){}
+  buildChars();setWho();$('nameBox').classList.add('hide');ac();sfx.cash();showStrip(isDello(pr.name)?`🧤 In porta c'è ${KEEPER.name}. Fagli vedere chi è Dello!`:`⚽ Benvenuto in campo, ${PLAYER.name} ${PLAYER.num}!`,'win');checkRecharges();updateUI();}
+$('nameForm').addEventListener('submit',e=>{e.preventDefault();
+  const name=$('nameIn').value.trim().replace(/\s+/g,' ').slice(0,14),num=Math.floor(+$('numIn').value);
+  if(!name){$('pfErr').textContent='Scrivi il tuo nome';$('nameIn').focus();return;}
+  if(!(num>=1&&num<=99)){$('pfErr').textContent='Scegli un numero da 1 a 99';$('numIn').focus();return;}
+  const pr={name,num,color:pfColor};
+  if(isDello(name)){pfPending=pr;$('pfStep1').classList.add('hide');$('pfStep2').classList.remove('hide');sfx.whistle();return;}
+  saveProfile(pr);});
+$('keepers').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!pfPending)return;pfPending.keeper=b.dataset.k;saveProfile(pfPending);pfPending=null;});
+$('meChip').addEventListener('click',()=>{if(st.state!=='setup'){showStrip('Finisci prima la partita in corso','lose');return;}openProfile();});
+buildChars();setWho();
+if(!PROFILE)openProfile();
 showBroke();
 checkRecharges();
 setInterval(()=>{if(!document.hidden)checkRecharges();},20000);

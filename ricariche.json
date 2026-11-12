@@ -1,5 +1,5 @@
 {
-  "_info": "Ricariche di Bazoo. Per ricaricare un dispositivo aggiungi una voce con id unico e importo in euro.",
+  "_info": "Ricariche di Bazoo. 'dispositivi' = per codice dispositivo; 'giocatori' = per 'nome#numero' (minuscolo), valgono solo per i dispositivi creati prima di 'ts'.",
   "dispositivi": {
     "KAGNG": {
       "nome": "",
@@ -36,5 +36,6 @@
         }
       ]
     }
-  }
+  },
+  "giocatori": {}
 }
