@@ -866,6 +866,7 @@ function finish(P){
 
 function startGame(){
   if(st.state!=='setup')return;
+  if(!BETS.includes(st.bet))st.bet=BETS[BETS.length-1];
   if(st.bal<st.bet)return;
   ac();sfx.click();
   st.bal-=st.bet;st.streak=0;st.state='aim';
@@ -934,6 +935,7 @@ function updateUI(){
   $('v1Panel').classList.toggle('hide',MODE!=='vs');
   if(MODE==='vs'){$('setup').classList.add('hide');$('aim').classList.add('hide');vsUI();requestAnimationFrame(resize);return;}
   const setup=st.state==='setup';
+  if(setup&&!BETS.includes(st.bet))st.bet=BETS[BETS.length-1];
   $('setup').classList.toggle('hide',!setup);$('aim').classList.toggle('hide',setup);
   modesEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===st.mode));
   betsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.b===st.bet));
