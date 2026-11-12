@@ -1,4 +1,15 @@
 {
   "_info": "Ricariche di Bazoo. Per ricaricare un dispositivo aggiungi una voce con id unico e importo in euro.",
-  "dispositivi": {}
+  "dispositivi": {
+    "KAGNG": {
+      "nome": "",
+      "ricariche": [
+        {
+          "id": "KAGNG-1",
+          "importo": 100,
+          "data": "2026-11-12"
+        }
+      ]
+    }
+  }
 }
