@@ -100,6 +100,16 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .bk-bazoo{display:inline-flex;align-items:center;gap:12px;font-family:'Bebas Neue',Impact,sans-serif;font-size:58px;letter-spacing:3px;color:#fff;line-height:1}
 .bk-bazoo span{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#1f56d6;border:3px solid #fff;font-size:26px;letter-spacing:0}
 .bk-call{margin-top:26px;display:inline-block;white-space:nowrap;padding:14px 28px;border-radius:16px;background:linear-gradient(180deg,#ffe07a,#f2b400);color:#2a1d00;font-family:'Bebas Neue',Impact,sans-serif;font-size:32px;letter-spacing:2px;box-shadow:0 6px 0 #9a7000;animation:bkPulse 1.1s infinite}
+.bk-call{text-decoration:none}
+.bk-code{margin-top:22px;font-size:17px;color:#ffb3bb;font-weight:600;letter-spacing:1px}
+.bk-code b{font-size:26px;color:#fff;letter-spacing:4px;background:rgba(255,255,255,.08);padding:2px 10px;border-radius:8px;margin-left:4px}
+.bk-note{margin-top:12px;font-size:14px;color:#c98a92;line-height:1.35}
+.namebox{background:radial-gradient(90% 70% at 50% 35%,#12305a 0%,#081227 60%,#040811 100%);z-index:60}
+.namebox h2.nm{color:var(--acc);text-shadow:0 4px 0 #2a3a00}
+.namebox p{color:var(--mut)!important;margin:10px 0 16px!important;font-size:19px!important}
+.namebox input{width:100%;height:56px;border-radius:14px;border:2px solid var(--line);background:#0c1730;color:#fff;font:700 24px 'Barlow Condensed',sans-serif;text-align:center;margin-bottom:14px;outline:none}
+.namebox input:focus{border-color:var(--acc)}
+.foot b{color:#9fb2d8;letter-spacing:2px}
 @keyframes bkPulse{50%{transform:scale(1.06);box-shadow:0 6px 0 #9a7000,0 0 0 10px rgba(255,207,63,.15)}}
 .foot{text-align:center;font-size:11px;color:#5c6d92;margin-top:8px;letter-spacing:.5px}
 @media (max-height:700px){
@@ -113,7 +123,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 <body>
 <div id="app">
   <header>
-    <div class="logo">DALLA TESI<br><span>AI RIGORI</span><small>SEGNA 10 DI FILA · INCASSA QUANDO VUOI</small></div>
+    <div class="logo">DALLA TESI<br><span>AI RIGORI</span><small id="who">SEGNA 10 DI FILA · INCASSA QUANDO VUOI</small></div>
     <div class="hr">
       <div class="bal" id="balBox"><small>SALDO</small><b id="bal">100,00 €</b></div>
       <button class="mute" id="mute" aria-label="Audio">🔊</button>
@@ -132,7 +142,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       <div class="row"><span class="lbl">Chi tira</span><div class="chips" id="shooters"></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il portiere sceglie a caso a ogni tiro</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v3</div>
     </div>
 
     <div id="aim" class="hide">
@@ -159,8 +169,20 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
     <div class="bk-bal">Saldo: <b id="bkBal">0,00 €</b></div>
     <p>L'unica soluzione è sentire</p>
     <div class="bk-bazoo"><span>15</span>BAZOO</div>
-    <div class="bk-call">📞 CHIAMALO ORA</div>
+    <a class="bk-call" id="callBazoo" href="#" target="_blank" rel="noopener">📞 CHIAMA BAZOO</a>
+    <div class="bk-code">Il tuo codice: <b id="bkCode">—</b></div>
+    <div class="bk-note">Quando Bazoo ti ricarica, il saldo torna da solo.<br>Lascia aperta questa pagina o riaprila più tardi.</div>
   </div>
+</div>
+
+<div id="nameBox" class="broke namebox hide">
+  <form class="bk-in" id="nameForm">
+    <div class="bk-emoji">⚽</div>
+    <h2 class="nm">CHI SEI?</h2>
+    <p>Scrivi il tuo nome per entrare in campo</p>
+    <input id="nameIn" maxlength="20" autocomplete="off" placeholder="Il tuo nome">
+    <button class="big" type="submit">ENTRA IN CAMPO</button>
+  </form>
 </div>
 
 <script>
@@ -177,10 +199,10 @@ const KEEPER={name:'DELLO',jersey:'#ff6a13',dark:'#c94a00',shorts:'#151515',sock
 const MODES={
   soft:  {label:'SOFT',  p:0.80},
   medium:{label:'MEDIUM',p:2/3},
-  hard:  {label:'HARD',  p:0.50},
+  hard:  {label:'HARD',  p:(2/3)*0.95},  // pali molto rari (5% dei tiri non parati)
 };
 const RTP=0.97, MAXGOALS=10;
-const BETS=[10,20,30,40,100,200,300,500,1000]; // centesimi
+const BETS=[10,20,30,40,100,200,300,500,1000,5000,10000]; // centesimi
 const MINBET=BETS[0];
 function mult(mode,n){ if(n<=0) return 0; return Math.floor(RTP*Math.pow(1/MODES[mode].p,n)*100)/100; }
 
@@ -203,6 +225,9 @@ function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 /* ================== STATO ================== */
 const st={bal:10000,mode:'medium',shooter:-1,bet:100,streak:0,state:'setup',shots:0};
 const KEY='rigori-dello-v1';
+let DEV='',NAME='',applied=[];
+try{DEV=localStorage.getItem(KEY+'-dev')||'';NAME=localStorage.getItem(KEY+'-name')||'';applied=JSON.parse(localStorage.getItem(KEY+'-ric')||'[]');if(!Array.isArray(applied))applied=[];}catch(e){}
+if(!/^[A-Z2-9]{5}$/.test(DEV)){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';DEV='';const u=new Uint32Array(5);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<5;i++)u[i]=Math.random()*1e9}for(let i=0;i<5;i++)DEV+=A[u[i]%A.length];try{localStorage.setItem(KEY+'-dev',DEV)}catch(e){}}
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ if(Number.isFinite(s.bal)) st.bal=Math.max(0,Math.floor(s.bal)); if(MODES[s.mode]) st.mode=s.mode; if(s.shooter>=-1&&s.shooter<4) st.shooter=s.shooter; if(BETS.includes(s.bet)) st.bet=s.bet; }}catch(e){}
 let savedRound=null;
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null');const r=s&&s.round;
@@ -626,7 +651,7 @@ function makePlan(z,now){
   let res,variant='';
   if(st.mode==='soft'){ if(same){ if(rnd()<0.6) res='save'; else {res='goal';variant=z===1?'tunnel':'slip';} } else res='goal'; }
   else if(st.mode==='medium'){ res=same?'save':'goal'; }
-  else { if(same) res='save'; else if(rnd()<0.25) res='wood'; else res='goal'; }
+  else { if(same) res='save'; else if(rnd()<0.05) res='wood'; else res='goal'; }
 
   const sideT=d=>({x:d<0?R(92,122):R(278,308),y:R(150,222)});
   const centT=()=>({x:R(182,218),y:R(150,212)});
@@ -711,7 +736,20 @@ function cashout(jackpot){
     showStrip(`💰 Hai incassato ${fmt(win)} dopo ${st.streak} gol (${fmtX(m)})`,'win');}
   st.streak=0;st.state='setup';savedRound=null;save();updateUI();
 }
-function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').textContent=fmt(st.bal);$('broke').classList.remove('hide');sfx.lose();}
+function callText(){return `Bazoo aiuto! 😭 Ho perso tutto a "Dalla tesi ai rigori". Ricaricami 100 €! Sono ${NAME||'?'} – codice dispositivo: ${DEV}`;}
+function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').textContent=fmt(st.bal);$('bkCode').textContent=DEV;
+  $('callBazoo').href='https://wa.me/?text='+encodeURIComponent(callText());$('broke').classList.remove('hide');sfx.lose();}
+/* ---- ricariche da Bazoo (file ricariche.json nel repository) ---- */
+async function checkRecharges(){
+  try{const r=await fetch('ricariche.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
+    const d=j&&j.dispositivi&&j.dispositivi[DEV];if(!d||!Array.isArray(d.ricariche))return;let tot=0;
+    for(const x of d.ricariche){if(x&&typeof x.id==='string'&&!applied.includes(x.id)&&Number.isFinite(x.importo)&&x.importo>0&&x.importo<=100000){applied.push(x.id);tot+=Math.round(x.importo*100);}}
+    if(tot>0){st.bal+=tot;try{localStorage.setItem(KEY+'-ric',JSON.stringify(applied))}catch(e){}save();
+      $('broke').classList.add('hide');bumpBal('up');sfx.cash();burst(160,true);
+      scene.banner={title:'RICARICA!',sub:`Bazoo ti ha mandato ${fmt(tot)}`,col:'#ffcf3f',t0:performance.now(),dur:3000};
+      showStrip(`💰 Bazoo ti ha ricaricato ${fmt(tot)}!`,'win');updateUI();}
+  }catch(e){}
+}
 
 /* ================== UI ================== */
 const modesEl=$('modes'),shEl=$('shooters'),betsEl=$('bets'),ladderEl=$('ladder');
@@ -779,7 +817,15 @@ buildStatic();updateUI();resize();
 if(st.state==='aim'&&st.streak>=MAXGOALS){cashout(true);}
 else if(st.state==='aim'&&st.streak>0)showStrip(`Partita ripresa: ${st.streak} gol di fila, puoi tirare o incassare`,'win');
 else if(st.state==='aim')showStrip('Partita ripresa: tocca a te tirare','win');
+function setWho(){$('who').textContent=NAME?('GIOCATORE: '+NAME.toUpperCase()):'SEGNA 10 DI FILA · INCASSA QUANDO VUOI';$('devCode').textContent=DEV;}
+setWho();
+if(!NAME){$('nameBox').classList.remove('hide');setTimeout(()=>{try{$('nameIn').focus()}catch(e){}},300);}
+$('nameForm').addEventListener('submit',e=>{e.preventDefault();const v=$('nameIn').value.trim().replace(/\s+/g,' ').slice(0,20);if(!v){$('nameIn').focus();return;}
+  NAME=v;try{localStorage.setItem(KEY+'-name',NAME)}catch(e){}$('nameBox').classList.add('hide');setWho();ac();sfx.click();});
 showBroke();
+checkRecharges();
+setInterval(()=>{if(!document.hidden)checkRecharges();},20000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkRecharges();});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{});
 requestAnimationFrame(frame);
 })();
