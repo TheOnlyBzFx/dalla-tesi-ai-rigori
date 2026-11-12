@@ -87,6 +87,20 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .cash.pulse:not(:disabled){animation:pulse 1.2s infinite}
 @keyframes pulse{50%{box-shadow:0 6px 0 #9a7000,0 0 0 6px rgba(255,207,63,.18),0 10px 24px rgba(255,200,0,.35)}}
 .hide{display:none!important}
+.broke{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(90% 70% at 50% 35%,#5a0d18 0%,#22050b 55%,#0b0205 100%);animation:bkIn .6s ease both}
+@keyframes bkIn{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+.bk-in{text-align:center;max-width:420px}
+.bk-emoji{font-size:64px;line-height:1;margin-bottom:6px;animation:bkShake 2.4s infinite}
+@keyframes bkShake{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
+.broke h2{margin:0;font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:clamp(64px,19vw,96px);line-height:.88;letter-spacing:2px;color:#ff4d5e;text-shadow:0 4px 0 #3a0008,0 0 40px rgba(255,77,94,.35)}
+.bk-bal{margin:14px 0 22px;font-size:18px;color:#ffb3bb;font-weight:600;letter-spacing:1px}
+.bk-bal b{color:#fff;font-weight:800}
+.broke p{margin:0 0 8px;font-size:22px;font-weight:600;color:#ffd7db}
+.bk-bazoo{display:inline-flex;align-items:center;gap:12px;font-family:'Bebas Neue',Impact,sans-serif;font-size:58px;letter-spacing:3px;color:#fff;line-height:1}
+.bk-bazoo span{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#1f56d6;border:3px solid #fff;font-size:26px;letter-spacing:0}
+.bk-call{margin-top:26px;display:inline-block;white-space:nowrap;padding:14px 28px;border-radius:16px;background:linear-gradient(180deg,#ffe07a,#f2b400);color:#2a1d00;font-family:'Bebas Neue',Impact,sans-serif;font-size:32px;letter-spacing:2px;box-shadow:0 6px 0 #9a7000;animation:bkPulse 1.1s infinite}
+@keyframes bkPulse{50%{transform:scale(1.06);box-shadow:0 6px 0 #9a7000,0 0 0 10px rgba(255,207,63,.15)}}
 .foot{text-align:center;font-size:11px;color:#5c6d92;margin-top:8px;letter-spacing:.5px}
 @media (max-height:700px){
   .foot{display:none} .logo{font-size:22px} .logo small{display:none} .bal b{font-size:19px} .row{margin-bottom:5px}
@@ -118,7 +132,6 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       <div class="row"><span class="lbl">Chi tira</span><div class="chips" id="shooters"></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <button class="ghost hide" id="refill">RICARICA 100 €</button>
       <div class="foot">Soldi finti, solo per divertimento · il portiere sceglie a caso a ogni tiro</div>
     </div>
 
@@ -136,6 +149,17 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       </div>
       <button class="cash" id="cash">INCASSA</button>
     </div>
+  </div>
+</div>
+
+<div id="broke" class="broke hide">
+  <div class="bk-in">
+    <div class="bk-emoji">💸</div>
+    <h2>HAI PERSO<br>TUTTO</h2>
+    <div class="bk-bal">Saldo: <b id="bkBal">0,00 €</b></div>
+    <p>L'unica soluzione è sentire</p>
+    <div class="bk-bazoo"><span>15</span>BAZOO</div>
+    <div class="bk-call">📞 CHIAMALO ORA</div>
   </div>
 </div>
 
@@ -157,6 +181,7 @@ const MODES={
 };
 const RTP=0.97, MAXGOALS=10;
 const BETS=[10,20,30,40,100,200,300,500,1000]; // centesimi
+const MINBET=BETS[0];
 function mult(mode,n){ if(n<=0) return 0; return Math.floor(RTP*Math.pow(1/MODES[mode].p,n)*100)/100; }
 
 /* ================== UTILS ================== */
@@ -179,7 +204,12 @@ function vibrate(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 const st={bal:10000,mode:'medium',shooter:-1,bet:100,streak:0,state:'setup',shots:0};
 const KEY='rigori-dello-v1';
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ if(Number.isFinite(s.bal)) st.bal=Math.max(0,Math.floor(s.bal)); if(MODES[s.mode]) st.mode=s.mode; if(s.shooter>=-1&&s.shooter<4) st.shooter=s.shooter; if(BETS.includes(s.bet)) st.bet=s.bet; }}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify({bal:st.bal,mode:st.mode,shooter:st.shooter,bet:st.bet}))}catch(e){}}
+let savedRound=null;
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');const r=s&&s.round;
+  if(r&&BETS.includes(r.bet)&&MODES[r.mode]&&r.streak>=0&&r.streak<=MAXGOALS){st.bet=r.bet;st.mode=r.mode;st.streak=Math.floor(r.streak);st.state='aim';savedRound=r;}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({bal:st.bal,mode:st.mode,shooter:st.shooter,bet:st.bet,round:savedRound}))}catch(e){}}
+window.addEventListener('pagehide',save);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
 function curShooter(){ return st.shooter<0 ? st.shots%4 : st.shooter; }
 
 /* ================== AUDIO ================== */
@@ -647,7 +677,8 @@ function finish(P){
   }else{
     sfx.lose();
     showStrip(`Hai perso ${fmt(st.bet)}. Dello ti ha fermato al ${st.streak+1}° rigore.`,'lose');
-    st.streak=0;st.state='setup';
+    st.streak=0;st.state='setup';savedRound=null;save();
+    if(st.bal<MINBET)setTimeout(showBroke,1300);
   }
   updateUI();
 }
@@ -657,6 +688,7 @@ function startGame(){
   if(st.bal<st.bet)return;
   ac();sfx.click();
   st.bal-=st.bet;st.streak=0;st.state='aim';
+  savedRound={bet:st.bet,mode:st.mode,streak:0};
   bumpBal('down');showStrip('');save();updateUI();
 }
 function shoot(z){
@@ -664,7 +696,8 @@ function shoot(z){
   ac();const now=performance.now();
   scene.press=z;scene.pressT=now;
   st.state='anim';
-  scene.plan=makePlan(z,now);scene.t0=now;scene.banner=null;scene.bulge=null;scene.shake=null;
+  scene.plan=makePlan(z,now);scene.t0=now;
+  savedRound=scene.plan.goal?{bet:st.bet,mode:st.mode,streak:st.streak+1}:null;save();scene.banner=null;scene.bulge=null;scene.shake=null;
   sfx.whistle();updateUI();
 }
 function cashout(jackpot){
@@ -676,8 +709,9 @@ function cashout(jackpot){
     showStrip(`🏆 10 rigori di fila! Hai vinto il premio massimo: ${fmt(win)}`,'win');}
   else{sfx.cash();burst(90,true);vibrate(60);scene.banner={title:'INCASSATO!',sub:`+${fmt(win)}  (${fmtX(m)})`,col:'#ffcf3f',t0:now,dur:2000};
     showStrip(`💰 Hai incassato ${fmt(win)} dopo ${st.streak} gol (${fmtX(m)})`,'win');}
-  st.streak=0;st.state='setup';save();updateUI();
+  st.streak=0;st.state='setup';savedRound=null;save();updateUI();
 }
+function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').textContent=fmt(st.bal);$('broke').classList.remove('hide');sfx.lose();}
 
 /* ================== UI ================== */
 const modesEl=$('modes'),shEl=$('shooters'),betsEl=$('bets'),ladderEl=$('ladder');
@@ -690,7 +724,6 @@ function buildStatic(){
   shEl.onclick=e=>{const b=e.target.closest('button');if(!b||st.state!=='setup')return;st.shooter=+b.dataset.s;sfx.click();save();updateUI();};
   betsEl.onclick=e=>{const b=e.target.closest('button');if(!b||st.state!=='setup')return;st.bet=+b.dataset.b;sfx.click();save();updateUI();};
   $('play').onclick=startGame;
-  $('refill').onclick=()=>{st.bal=10000;bumpBal('up');sfx.cash();showStrip('Saldo ricaricato a 100,00 €','win');save();updateUI();};
   $('cash').onclick=()=>cashout(false);
   document.querySelectorAll('.dirs button').forEach(b=>b.onclick=()=>shoot(+b.dataset.z));
   $('mute').onclick=()=>{muted=!muted;try{localStorage.setItem(KEY+'-mute',muted?'1':'0')}catch(e){}updateUI();if(!muted){ac();sfx.click();}};
@@ -709,8 +742,7 @@ function updateUI(){
   shEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.s===st.shooter));
   betsEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.b===st.bet));
   const play=$('play');
-  if(st.bal<st.bet){play.disabled=true;play.textContent='SALDO INSUFFICIENTE';}else{play.disabled=false;play.textContent='GIOCA '+fmtBet(st.bet);}
-  $('refill').classList.toggle('hide',st.bal>=10);
+  if(st.bal<st.bet){play.disabled=true;play.textContent=st.bal>=MINBET?'PUNTA DI MENO':'SALDO FINITO';}else{play.disabled=false;play.textContent='GIOCA '+fmtBet(st.bet);}
   // pannello tiro
   const anim=st.state==='anim';
   document.querySelectorAll('.dirs button').forEach(b=>b.disabled=anim);
@@ -744,6 +776,10 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 buildStatic();updateUI();resize();
+if(st.state==='aim'&&st.streak>=MAXGOALS){cashout(true);}
+else if(st.state==='aim'&&st.streak>0)showStrip(`Partita ripresa: ${st.streak} gol di fila, puoi tirare o incassare`,'win');
+else if(st.state==='aim')showStrip('Partita ripresa: tocca a te tirare','win');
+showBroke();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{});
 requestAnimationFrame(frame);
 })();
