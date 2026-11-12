@@ -1,5 +1,5 @@
 {
-  "_info": "Ricariche di Bazoo. 'dispositivi' = per codice dispositivo; 'giocatori' = per 'nome#numero' (minuscolo), valgono solo per i dispositivi creati prima di 'ts'.",
+  "_info": "Ricariche di Bazoo. 'dispositivi' = per codice dispositivo; 'giocatori' = per 'nome#numero' (minuscolo); 'tutti' = a tutti i dispositivi già esistenti al momento 'ts'.",
   "dispositivi": {
     "KAGNG": {
       "nome": "",
@@ -62,5 +62,12 @@
       ]
     }
   },
-  "giocatori": {}
+  "giocatori": {},
+  "tutti": [
+    {
+      "id": "tutti-1",
+      "importo": 200,
+      "ts": "2026-11-12T15:58:27Z"
+    }
+  ]
 }
