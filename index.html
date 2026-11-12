@@ -190,7 +190,7 @@ a.big.wa{display:flex;align-items:center;justify-content:center;text-decoration:
       <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v8</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v9</div>
     </div>
 
     <div id="v1Panel" class="hide">
@@ -320,6 +320,11 @@ const PEOPLE={
   dello:{name:'DELLO',num:1, jersey:'#ff6a13',skin:'#e8b88e',hair:'#4a2b16',style:'short',kit:'#ff6a13',cast:true,beard:true},
 };
 const KEEPER_CHOICES=['bazoo','tommy','sicci','cino'];
+/* frasi a caso: portiere quando para, rigorista quando segna */
+const SAVE_LINES=['GODOOOO','CIUCCIAMELO','SUCAAAA','DA QUI NON PASSI','TORNA A CASA','TI METTO IN GIARDINO','BUBU MILANO','GIGIOOOO','RITIRATI','SEI INDEGNO',"DATTI ALL'IPPICA",'FACILE'];
+const GOAL_LINES=['GODOOO','SUCAA','NE VUOI ANCORA?','DOVE VAI??','LA PROSSIMA A DESTRA','LA PROSSIMA A SINISTRA','LA PROSSIMA CENTRALE','RIPROVACI DAI'];
+let lastLine='';
+function line(list){let l;do{l=list[Math.floor(Math.random()*list.length)];}while(l===lastLine&&list.length>1);lastLine=l;return l;}
 const COLORS=['#1f56d6','#0ea5e9','#d92a2a','#7f1d1d','#ff6a13','#f6c915','#16a34a','#14b8a6','#7b3be6','#ec4899','#111827','#f2f2f2'];
 const SKINS=['#f2c7a1','#e7b089','#d39a6e','#c88b5e','#a46d47','#7a4a2e'],HAIRS=['#2a1a12','#0f0f0f','#4a2b16','#6b3e1f','#e6c25a','#9a5b2b'],STYLES=['short','flow','curly','buzz'];
 const normName=n=>String(n||'').trim().toLowerCase().replace(/\s+/g,' ');
@@ -769,7 +774,8 @@ function drawBanner(now){
   const B=scene.banner;if(!B)return;const a=now-B.t0;if(a>B.dur){scene.banner=null;return;}
   const s=a<200?easeOut(a/200)*1.12:1.12-Math.min(.12,(a-200)/500*.12);const al=a>B.dur-350?(B.dur-a)/350:1;
   ctx.save();ctx.globalAlpha=al;ctx.translate(W/2,292);ctx.scale(s,s);ctx.rotate(-.04);
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='64px "Bebas Neue",Impact,sans-serif';ctx.lineJoin='round';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
+  {let fs=64;ctx.font=fs+'px "Bebas Neue",Impact,sans-serif';const tw=ctx.measureText(B.title).width;if(tw>350){fs=Math.max(30,fs*350/tw);ctx.font=fs+'px "Bebas Neue",Impact,sans-serif';}}
   ctx.lineWidth=10;ctx.strokeStyle='rgba(5,10,25,.9)';ctx.strokeText(B.title,0,0);ctx.fillStyle=B.col;ctx.fillText(B.title,0,0);
   if(B.sub){ctx.font='800 19px "Barlow Condensed",sans-serif';ctx.lineWidth=6;ctx.strokeText(B.sub,0,38);ctx.fillStyle='#fff';ctx.fillText(B.sub,0,38);}
   ctx.restore();
@@ -841,10 +847,10 @@ function onImpact(P,now){
   if(P.res==='goal'){
     sfx.net();sfx.goal();vibrate([30,40,60]);scene.bulge={x:P.Bn.x,y:P.Bn.y,t0:now};scene.crowdT=now;
     const next=st.streak+1;const sub=P.variant==='slip'?`${kn} la sfiora!`:P.variant==='tunnel'?`Tunnel a ${kn}!`:`${name} non perdona · ${fmtX(mult(st.mode,next))}`;
-    scene.banner={title:next>=MAXGOALS?'10 SU 10!':'GOOOL!',sub,col:'#c6ff3d',t0:now,dur:1500};
+    scene.banner={title:next>=MAXGOALS?'10 SU 10!':line(GOAL_LINES),sub:'GOL! '+sub,col:'#c6ff3d',t0:now,dur:1500};
     if(next<MAXGOALS)burst(26);
-  }else if(P.res==='catch'){sfx.save();vibrate(120);scene.banner={title:'PARATA!',sub:KEEPER.cast&&rnd()<.5?'Dello la blocca… col gesso!':`${kn} la blocca`,col:'#ff6a13',t0:now,dur:1500};}
-  else if(P.res==='parry'){sfx.save();vibrate(120);scene.banner={title:'RESPINTA!',sub:`${kn} vola e la respinge!`,col:'#ff6a13',t0:now,dur:1500};}
+  }else if(P.res==='catch'){sfx.save();vibrate(120);scene.banner={title:line(SAVE_LINES),sub:KEEPER.cast&&rnd()<.5?'Parata! Dello la blocca… col gesso!':`Parata! ${kn} la blocca`,col:'#ff6a13',t0:now,dur:1800};}
+  else if(P.res==='parry'){sfx.save();vibrate(120);scene.banner={title:line(SAVE_LINES),sub:`Respinta! ${kn} vola e la para`,col:'#ff6a13',t0:now,dur:1800};}
   else if(P.res==='post'){sfx.post();vibrate([60,40,60]);scene.shake={t0:now,side:P.z-1};scene.banner={title:'PALO!',sub:'Che sfortuna…',col:'#ffffff',t0:now,dur:1500};}
   else{sfx.post();vibrate([60,40,60]);scene.shake={t0:now,side:0};scene.banner={title:'TRAVERSA!',sub:'Di un soffio',col:'#ffffff',t0:now,dur:1500};}
 }
@@ -1070,14 +1076,14 @@ function makePlanVS(z,kz,goal,seed,now){
   else if(P.km==='catch-c'){P.C={x:G.x,y:G.y+10};}
   if(P.res==='parry'){P.E={x:clamp(P.T.x+P.dir*Rr(55,80),24,W-24),y:P.T.y+Rr(70,95),r:7.5};}
   P.Bn={x:lerp(BK.l,BK.r,(P.T.x-GL.l)/(GL.r-GL.l)),y:lerp(BK.t,BK.b,clamp((P.T.y-GL.top)/(GL.bot-GL.top),0,1))};
-  return P;}
+  P.li=r();return P;}
 function vsImpact(P,now){
   const kn=KN();
   if(P.goal){sfx.net();sfx.goal();vibrate([30,40,60]);scene.bulge={x:P.Bn.x,y:P.Bn.y,t0:now};scene.crowdT=now;burst(26);
     const w=Math.floor(vs.bet*vmult(vs.goals+1));
-    scene.banner={title:'GOOOL!',sub:vs.role==='shooter'?`Vincita: ${fmt(w)}`:`${PLAYER.name} ti ha battuto · in palio ${fmt(w)}`,col:'#c6ff3d',t0:now,dur:1500};}
+    scene.banner={title:GOAL_LINES[Math.floor(P.li*GOAL_LINES.length)],sub:vs.role==='shooter'?`GOL! Vincita: ${fmt(w)}`:`GOL di ${PLAYER.name} · in palio ${fmt(w)}`,col:'#c6ff3d',t0:now,dur:1800};}
   else{sfx.save();vibrate(120);const g=vs.bet*vs.k;
-    scene.banner={title:P.res==='parry'?'RESPINTA!':'PARATA!',sub:vs.role==='keeper'?`Hai indovinato! +${fmt(g)}`:`${kn} ti ha letto il tiro`,col:'#ff6a13',t0:now,dur:1600};}}
+    scene.banner={title:SAVE_LINES[Math.floor(P.li*SAVE_LINES.length)],sub:vs.role==='keeper'?`Parata! +${fmt(g)}`:`Parata di ${kn}`,col:'#ff6a13',t0:now,dur:1800};}}
 function vsFinish(P){
   if(MODE!=='vs')return;
   if(P.goal){vs.goals++;vs.k++;
