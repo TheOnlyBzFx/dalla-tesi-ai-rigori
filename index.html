@@ -110,6 +110,8 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .namebox input{width:100%;height:56px;border-radius:14px;border:2px solid var(--line);background:#0c1730;color:#fff;font:700 24px 'Barlow Condensed',sans-serif;text-align:center;margin-bottom:14px;outline:none}
 .namebox input:focus{border-color:var(--acc)}
 .foot b{color:#9fb2d8;letter-spacing:2px}
+.hr{gap:6px}.mute.exit{font-size:17px}
+#pfCancel{border-color:var(--mut);color:var(--mut)}
 .chip .edit{font-size:13px;color:var(--mut);font-weight:600;margin-left:4px}
 .chip.vs{border-style:dashed;color:var(--mut);font-weight:600;cursor:default}.chip.vs b{color:#ffb27a;margin-left:4px}
 .namebox{align-items:flex-start;overflow-y:auto}
@@ -147,6 +149,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
     <div class="hr">
       <div class="bal" id="balBox"><small>SALDO</small><b id="bal">100,00 €</b></div>
       <button class="mute" id="mute" aria-label="Audio">🔊</button>
+      <button class="mute exit" id="exitBtn" aria-label="Esci e cambia nome" title="Esci e cambia nome">🚪</button>
     </div>
   </header>
 
@@ -162,7 +165,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v4</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v5</div>
     </div>
 
     <div id="aim" class="hide">
@@ -209,6 +212,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       <div class="swatches" id="swatches"></div>
       <div class="pferr" id="pfErr"></div>
       <button class="big" type="submit">ENTRA IN CAMPO</button>
+      <button class="ghost hide" type="button" id="pfCancel">ANNULLA</button>
       <div class="pfnote">Nome e numero servono a Bazoo per riconoscerti.<br>Se qualcuno ha già il tuo nome, scegli un numero diverso.</div>
     </div>
     <div id="pfStep2" class="hide">
@@ -892,7 +896,7 @@ function openProfile(){
   $('swatches').innerHTML=COLORS.map(c=>`<button type="button" data-c="${c}" style="background:${c}" aria-label="colore"></button>`).join('');
   $('keepers').innerHTML=KEEPER_CHOICES.map(k=>{const p=PEOPLE[k];return`<button type="button" data-k="${k}"><i style="background:${p.kit};color:${lum(p.kit)>.55?'#161616':'#fff'}">🧤</i>${p.name}</button>`;}).join('');
   $('nameIn').value=PROFILE?PROFILE.name:(NAME||'');$('numIn').value=PROFILE?PROFILE.num:'';pfColor=PROFILE?PROFILE.color:COLORS[(hashStr(String(Math.random()))%COLORS.length)];pfTouched=!!PROFILE;
-  $('pfErr').textContent='';$('pfStep1').classList.remove('hide');$('pfStep2').classList.add('hide');$('nameBox').classList.remove('hide');pfPreview();
+  $('pfErr').textContent='';$('pfCancel').classList.toggle('hide',!PROFILE);$('pfStep1').classList.remove('hide');$('pfStep2').classList.add('hide');$('nameBox').classList.remove('hide');pfPreview();
   setTimeout(()=>{try{if(!PROFILE)$('nameIn').focus()}catch(e){}},300);}
 $('swatches').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;pfColor=b.dataset.c;pfTouched=true;pfPreview();sfx.click();});
 $('nameIn').addEventListener('input',()=>{const k=PEOPLE[normName($('nameIn').value)];if(k&&!pfTouched&&!isDello($('nameIn').value)){$('numIn').value=k.num;pfColor=k.jersey;}pfPreview();});
@@ -908,7 +912,10 @@ $('nameForm').addEventListener('submit',e=>{e.preventDefault();
   if(isDello(name)){pfPending=pr;$('pfStep1').classList.add('hide');$('pfStep2').classList.remove('hide');sfx.whistle();return;}
   saveProfile(pr);});
 $('keepers').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!pfPending)return;pfPending.keeper=b.dataset.k;saveProfile(pfPending);pfPending=null;});
-$('meChip').addEventListener('click',()=>{if(st.state!=='setup'){showStrip('Finisci prima la partita in corso','lose');return;}openProfile();});
+function askProfile(){if(st.state!=='setup'){showStrip('Finisci prima la partita in corso (tira o incassa), poi puoi uscire','lose');return;}if(!$('broke').classList.contains('hide'))return;sfx.click();openProfile();}
+$('meChip').addEventListener('click',askProfile);
+$('exitBtn').addEventListener('click',askProfile);
+$('pfCancel').addEventListener('click',()=>{$('nameBox').classList.add('hide');pfPending=null;sfx.click();});
 buildChars();setWho();
 if(!PROFILE)openProfile();
 showBroke();
