@@ -743,7 +743,7 @@ function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').tex
 async function checkRecharges(){
   try{const r=await fetch('ricariche.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
     const d=j&&j.dispositivi&&j.dispositivi[DEV];if(!d||!Array.isArray(d.ricariche))return;let tot=0;
-    for(const x of d.ricariche){if(x&&typeof x.id==='string'&&!applied.includes(x.id)&&Number.isFinite(x.importo)&&x.importo>0&&x.importo<=100000){applied.push(x.id);tot+=Math.round(x.importo*100);}}
+    for(const x of d.ricariche){if(x&&typeof x.id==='string'&&!applied.includes(x.id)&&Number.isFinite(x.importo)&&x.importo>0&&x.importo<=100000000){applied.push(x.id);tot+=Math.round(x.importo*100);}}
     if(tot>0){st.bal+=tot;try{localStorage.setItem(KEY+'-ric',JSON.stringify(applied))}catch(e){}save();
       $('broke').classList.add('hide');bumpBal('up');sfx.cash();burst(160,true);
       scene.banner={title:'RICARICA!',sub:`Bazoo ti ha mandato ${fmt(tot)}`,col:'#ffcf3f',t0:performance.now(),dur:3000};
