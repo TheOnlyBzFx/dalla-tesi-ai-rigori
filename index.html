@@ -190,7 +190,7 @@ a.big.wa{display:flex;align-items:center;justify-content:center;text-decoration:
       <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v7</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v8</div>
     </div>
 
     <div id="v1Panel" class="hide">
@@ -346,7 +346,7 @@ const MODES={
   hard:  {label:'HARD',  p:(2/3)*0.95},  // pali molto rari (5% dei tiri non parati)
 };
 const RTP=0.97, MAXGOALS=10;
-const BETS=[10,20,30,40,100,200,300,500,1000,5000,10000]; // centesimi
+const BETS=[10,20,30,40,100,200,300,500,1000,5000];  // puntata massima 50 € // centesimi
 const MINBET=BETS[0];
 function mult(mode,n){ if(n<=0) return 0; return Math.floor(RTP*Math.pow(1/MODES[mode].p,n)*100)/100; }
 
@@ -378,7 +378,7 @@ if(!/^[A-Z2-9]{5}$/.test(DEV)){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';DEV=''
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ if(Number.isFinite(s.bal)) st.bal=Math.max(0,Math.floor(s.bal)); if(MODES[s.mode]) st.mode=s.mode; if(s.shooter>=-1&&s.shooter<4) st.shooter=s.shooter; if(BETS.includes(s.bet)) st.bet=s.bet; }}catch(e){}
 let savedRound=null;
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null');const r=s&&s.round;
-  if(r&&BETS.includes(r.bet)&&MODES[r.mode]&&r.streak>=0&&r.streak<=MAXGOALS){st.bet=r.bet;st.mode=r.mode;st.streak=Math.floor(r.streak);st.state='aim';savedRound=r;}}catch(e){}
+  if(r&&(BETS.includes(r.bet)||r.bet===10000)&&MODES[r.mode]&&r.streak>=0&&r.streak<=MAXGOALS){st.bet=r.bet;st.mode=r.mode;st.streak=Math.floor(r.streak);st.state='aim';savedRound=r;}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({bal:st.bal,mode:st.mode,shooter:st.shooter,bet:st.bet,round:savedRound}))}catch(e){}}
 window.addEventListener('pagehide',save);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
