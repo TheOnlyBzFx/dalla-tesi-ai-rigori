@@ -8,6 +8,12 @@ Gioco di rigori da browser: ognuno crea il suo giocatore (nome, numero, colore) 
 - Punti, scegli dove tirare (sinistra, centro, destra) e il portiere si tuffa a caso
 - Ogni gol aumenta la vincita: incassa quando vuoi o arriva a 10 gol di fila per il premio massimo
 
+## Modalità
+- **Single player**: tu contro Dello (o contro il portiere che sceglie Dello).
+- **1 vs 1**: uno crea la sfida (rigorista o portiere) e manda il codice/link all'amico. 30 secondi a testa per scegliere.
+  Ogni gol: vincita ×4/3. Il rigorista può incassare quando vuole (paga il portiere). Parata al tiro n° X: il portiere prende puntata × X.
+  I due telefoni si collegano tramite server MQTT pubblici gratuiti (broker.emqx.io e broker.hivemq.com).
+
 Soldi finti, solo per divertimento.
 
 ## Ricariche (per Bazoo)

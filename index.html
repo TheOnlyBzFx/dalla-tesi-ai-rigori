@@ -81,6 +81,7 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .dirs button svg{width:26px;height:26px;stroke:var(--acc);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .dirs button span{font-family:'Bebas Neue',Impact,sans-serif;font-size:19px;letter-spacing:1.5px;margin-top:1px}
 .dirs button:disabled{opacity:.4}
+.dirs button.picked{opacity:1!important;border-color:var(--gold);background:linear-gradient(180deg,#3a3010,#211a05)}
 .cash{width:100%;height:54px;margin-top:10px;border-radius:14px;background:linear-gradient(180deg,#ffe07a,#f2b400);color:#2a1d00;font-family:'Bebas Neue',Impact,sans-serif;font-size:26px;letter-spacing:1.5px;box-shadow:0 6px 0 #9a7000,0 10px 24px rgba(255,200,0,.25);transition:transform .08s}
 .cash:active{transform:translateY(3px);box-shadow:0 3px 0 #9a7000}
 .cash:disabled{background:#2a3550;color:#6d7da0;box-shadow:none;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px}
@@ -132,6 +133,30 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
 .keepers button{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Bebas Neue',Impact,sans-serif;font-size:28px;letter-spacing:2px}
 .keepers button i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:22px;border:3px solid rgba(255,255,255,.8)}
 .keepers button:active{transform:scale(.97)}
+.ov2{z-index:45}
+.modebtn{display:block;width:100%;text-align:left;background:linear-gradient(180deg,#1b2b52,#13203f);border:2px solid #2d4277;border-radius:18px;padding:16px 18px;margin:0 0 12px;box-shadow:0 5px 0 #0a1428}
+.modebtn b{display:block;font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:34px;letter-spacing:1.5px;color:var(--acc)}
+.modebtn.vsb b{color:var(--gold)} .modebtn small{font-size:15px;color:var(--mut);font-weight:600}
+.modebtn:active{transform:translateY(3px);box-shadow:0 2px 0 #0a1428}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 14px}
+.roles button{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Bebas Neue',Impact,sans-serif;font-size:27px;letter-spacing:1.5px}
+.roles button i{font-style:normal;font-size:36px} .roles button small{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--mut);letter-spacing:.5px}
+.roles button:active{transform:scale(.97);border-color:var(--acc)}
+.orsep{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px;letter-spacing:1px;margin:4px 0 10px}.orsep:before,.orsep:after{content:'';flex:1;height:1px;background:var(--line)}
+.joinrow{display:grid;grid-template-columns:1fr 120px;gap:8px}.joinrow input{margin:0!important;letter-spacing:6px;text-transform:uppercase}.joinrow .big{height:52px;margin:0;font-size:22px}
+.v1rules{margin:12px 0 4px;font-size:13.5px;color:#8fa2c8;line-height:1.45;text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.v1rules b{color:#dfe8ff}
+.bigcode{font-family:'Bebas Neue',Impact,sans-serif;font-size:72px;letter-spacing:12px;color:#fff;background:rgba(255,255,255,.05);border:2px dashed var(--acc);border-radius:18px;padding:6px 0 0 12px;margin:6px 0 16px}
+a.big.wa{display:flex;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(180deg,#4be38b,#1fae5b);box-shadow:0 6px 0 #11733a;color:#03220f}
+.v1status{margin:14px 0 2px;font-size:16px;font-weight:700;color:var(--mut)}
+.v1status.ok{color:var(--acc)} .v1status.bad{color:#ff8a96}
+.v1bar{display:flex;align-items:center;justify-content:space-between;gap:6px;font-weight:800;font-size:15px;letter-spacing:.5px;margin-bottom:4px}
+.v1bar span:first-child,.v1bar span:last-child{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v1bar span:last-child{text-align:right;color:#ffb27a}
+.v1t{font-family:'Bebas Neue',Impact,sans-serif;font-size:26px;min-width:44px;text-align:center;color:var(--gold)}
+.v1t.hurry{color:var(--red);animation:pulse 0.6s infinite}
+.tbar{height:5px;border-radius:5px;background:#1a2747;overflow:hidden;margin-bottom:8px}.tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--acc),var(--gold))}
+#v1Leave{height:38px;font-size:14px;border-color:#40507a;color:#7183a8;margin-top:8px}
 @keyframes bkPulse{50%{transform:scale(1.06);box-shadow:0 6px 0 #9a7000,0 0 0 10px rgba(255,207,63,.15)}}
 .foot{text-align:center;font-size:11px;color:#5c6d92;margin-top:8px;letter-spacing:.5px}
 @media (max-height:700px){
@@ -165,7 +190,26 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
       <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v5</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v6</div>
+    </div>
+
+    <div id="v1Panel" class="hide">
+      <div class="v1bar"><span id="v1Me">—</span><span class="v1t" id="v1Time">30</span><span id="v1Opp">—</span></div>
+      <div class="tbar"><i id="v1Tbar"></i></div>
+      <div class="row" id="v1BetRow"><span class="lbl">Quanto punti? (prima del primo tiro)</span><div class="chips bets" id="v1Bets"></div></div>
+      <div class="info">
+        <div><small id="v1L1">Puntata</small><b id="v1V1">—</b></div>
+        <div class="w"><small id="v1L2">Vincita</small><b id="v1V2">—</b></div>
+        <div class="n"><small id="v1L3">Col prossimo gol</small><b id="v1V3">—</b></div>
+      </div>
+      <div class="ask" id="v1Ask">—</div>
+      <div class="dirs" id="v1Dirs">
+        <button data-z="0"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>SINISTRA</span></button>
+        <button data-z="1"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span>CENTRO</span></button>
+        <button data-z="2"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>DESTRA</span></button>
+      </div>
+      <button class="cash" id="v1Cash">INCASSA</button>
+      <button class="ghost" id="v1Leave">ESCI DALLA SFIDA</button>
     </div>
 
     <div id="aim" class="hide">
@@ -195,6 +239,45 @@ canvas{display:block;border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.5),0 
     <a class="bk-call" id="callBazoo" href="#" target="_blank" rel="noopener">📞 CHIAMA BAZOO</a>
     <div class="bk-code">Il tuo codice: <b id="bkCode">—</b></div>
     <div class="bk-note">Quando Bazoo ti ricarica, il saldo torna da solo.<br>Lascia aperta questa pagina o riaprila più tardi.</div>
+  </div>
+</div>
+
+<div id="menuBox" class="broke namebox ov2 hide">
+  <div class="bk-in pf">
+    <div class="shirt" id="mnShirt"><span id="mnName">NOME</span><b id="mnNum">10</b></div>
+    <h2 class="nm">COME GIOCHI?</h2>
+    <button class="modebtn" id="mSingle" type="button"><b>🎯 SINGLE PLAYER</b><small id="mSingleSub">Tu contro Dello: segna 10 di fila o incassa</small></button>
+    <button class="modebtn vsb" id="mVs" type="button"><b>⚔️ 1 VS 1</b><small>Sfida un amico: uno tira, l'altro para</small></button>
+    <button class="ghost" id="mProfile" type="button">✏️ CAMBIA GIOCATORE</button>
+  </div>
+</div>
+
+<div id="v1Box" class="broke namebox ov2 hide">
+  <div class="bk-in pf">
+    <div id="v1Role">
+      <h2 class="nm">1 VS 1</h2>
+      <p>Crea una sfida: cosa vuoi fare tu?</p>
+      <div class="roles">
+        <button type="button" data-r="shooter"><i>⚽</i>RIGORISTA<small>Punti e tiri</small></button>
+        <button type="button" data-r="keeper"><i>🧤</i>PORTIERE<small>Pari e incassi</small></button>
+      </div>
+      <div class="orsep"><span>oppure entra con un codice</span></div>
+      <div class="joinrow"><input id="v1CodeIn" maxlength="5" placeholder="CODICE" autocomplete="off" autocapitalize="characters"><button class="big" type="button" id="v1JoinBtn">ENTRA</button></div>
+      <div class="pferr" id="v1Err"></div>
+      <div class="v1rules">Si gioca a turni: ognuno ha <b>30 secondi</b> per scegliere. Se il portiere si tuffa dove tiri, para.<br>
+        Ogni gol: vincita <b>×1,33</b>. Il rigorista può incassare quando vuole (paga il portiere).<br>
+        Parata al tiro n° X: il portiere prende <b>puntata × X</b> dal rigorista.</div>
+      <button class="ghost" type="button" id="v1Back">← INDIETRO</button>
+    </div>
+    <div id="v1Wait" class="hide">
+      <h2 class="nm">SFIDA<br>CREATA</h2>
+      <p>Manda il codice al tuo amico</p>
+      <div class="bigcode" id="v1Code">-----</div>
+      <a class="big wa" id="v1Wa" href="#" target="_blank" rel="noopener">📲 INVIA SU WHATSAPP</a>
+      <button class="ghost" type="button" id="v1Copy">📋 COPIA LINK</button>
+      <div class="v1status" id="v1Status">Collegamento…</div>
+      <button class="ghost" type="button" id="v1Cancel">ANNULLA</button>
+    </div>
   </div>
 </div>
 
@@ -244,15 +327,18 @@ const isDello=n=>normName(n)==='dello';
 function lum(hex){const n=parseInt(hex.slice(1),16);return(0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255;}
 function hashStr(t){let h=2166136261;for(const c of t){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
 let PROFILE=null, PLAYER=null, KEEPER=null;
+function looks(pr){const key=normName(pr.name),known=PEOPLE[key],h=hashStr(key||'x');
+  return{skin:known?known.skin:SKINS[h%SKINS.length],hair:known?known.hair:HAIRS[(h>>4)%HAIRS.length],style:known?known.style:STYLES[(h>>8)%STYLES.length],cast:!!(known&&known.cast),beard:!!(known&&known.beard)};}
+function shooterFrom(pr){const L=looks(pr),light=lum(pr.color)>.62;
+  return{name:String(pr.name).toUpperCase(),num:pr.num,jersey:pr.color,trim:light?'#141414':'#ffffff',shorts:light?'#141414':'#ffffff',socks:pr.color,skin:L.skin,hair:L.hair,style:L.style,cast:L.cast};}
+function keeperOf(name,num,kit,L){return{name,num,jersey:kit,dark:shade(kit,-.28),shorts:'#151515',socks:kit,skin:L.skin,hair:L.hair,style:L.style,glove:'#e4ff3a',cast:!!L.cast,beard:!!L.beard,ink:lum(kit)>.55?'#161616':'#ffffff'};}
 function buildChars(){
-  const pr=PROFILE||{name:'?',num:10,color:COLORS[0]};const key=normName(pr.name),known=PEOPLE[key],h=hashStr(key||'x');
-  const light=lum(pr.color)>.62;
-  PLAYER={name:String(pr.name).toUpperCase(),num:pr.num,jersey:pr.color,trim:light?'#141414':'#ffffff',shorts:light?'#141414':'#ffffff',socks:pr.color,
-    skin:known?known.skin:SKINS[h%SKINS.length],hair:known?known.hair:HAIRS[(h>>4)%HAIRS.length],style:known?known.style:STYLES[(h>>8)%STYLES.length],cast:!!(known&&known.cast)};
+  const pr=PROFILE||{name:'?',num:10,color:COLORS[0]};
+  PLAYER=shooterFrom(pr);
   const k=isDello(pr.name)?PEOPLE[KEEPER_CHOICES.includes(pr.keeper)?pr.keeper:'bazoo']:PEOPLE.dello;
-  KEEPER={name:k.name,num:k.num,jersey:k.kit,dark:shade(k.kit,-.28),shorts:'#151515',socks:k.kit,skin:k.skin,hair:k.hair,style:k.style,glove:'#e4ff3a',cast:!!k.cast,beard:!!k.beard,
-    ink:lum(k.kit)>.55?'#161616':'#ffffff'};
+  KEEPER=keeperOf(k.name,k.num,k.kit,k);
 }
+function buildCharsVS(shPr,kpPr){PLAYER=shooterFrom(shPr);const L=looks(kpPr);KEEPER=keeperOf(String(kpPr.name).toUpperCase(),kpPr.num,kpPr.color,L);}
 const KN=()=>KEEPER.name.charAt(0)+KEEPER.name.slice(1).toLowerCase();
 const MODES={
   soft:  {label:'SOFT',  p:0.80},
@@ -671,7 +757,7 @@ function ballState(now){
 
 /* ---- overlay ---- */
 function drawRings(now){
-  if(st.state!=='aim')return;
+  if(MODE==='vs'?!(vs.phase==='pick'&&!vs.myPick):st.state!=='aim')return;
   const pulse=(Math.sin(now/260)+1)/2;
   ZONES.forEach((z,i)=>{const pr=scene.press===i&&now-scene.pressT<200;
     ctx.save();ctx.globalAlpha=.55+pulse*.35;ctx.strokeStyle=pr?'#ffcf3f':'#c6ff3d';ctx.lineWidth=2.2;ctx.setLineDash([5,4]);ctx.lineDashOffset=-now/40;
@@ -707,9 +793,10 @@ function draw(now){
   drawRings(now);
   drawShooter(shooterPose(now));
   pill(8,8,KEEPER.cast?'🧤 DELLO · COL GESSO':'🧤 IN PORTA: '+KEEPER.name,'rgba(5,10,25,.72)','#ffb27a');
-  const m=MODES[st.mode];pill(W-8,8,m.label,st.mode==='hard'?'#ff4d5e':st.mode==='medium'?'#ffcf3f':'#c6ff3d','#0b1020','right');
+  if(MODE==='vs')pill(W-8,8,'1 VS 1','#ffcf3f','#0b1020','right');else{const m=MODES[st.mode];pill(W-8,8,m.label,st.mode==='hard'?'#ff4d5e':st.mode==='medium'?'#ffcf3f':'#c6ff3d','#0b1020','right');}
   pill(8,H-28,'⚽ TIRA: '+PLAYER.name+' '+PLAYER.num,'rgba(5,10,25,.72)','#fff');
-  if(st.streak>0&&st.state!=='setup')pill(W-8,H-28,'🔥 '+st.streak+' DI FILA','rgba(5,10,25,.72)','#c6ff3d','right');
+  if(MODE==='vs'){if(vs.goals>0)pill(W-8,H-28,'🔥 '+vs.goals+' DI FILA','rgba(5,10,25,.72)','#c6ff3d','right');}
+  else if(st.streak>0&&st.state!=='setup')pill(W-8,H-28,'🔥 '+st.streak+' DI FILA','rgba(5,10,25,.72)','#c6ff3d','right');
   drawBanner(now);drawConfetti();
 }
 
@@ -806,7 +893,7 @@ function cashout(jackpot){
   st.streak=0;st.state='setup';savedRound=null;save();updateUI();
 }
 function callText(){return `Bazoo aiuto! 😭 Ho perso tutto a "Dalla tesi ai rigori". Ricaricami 100 €! Sono ${PROFILE?PROFILE.name+' (n° '+PROFILE.num+')':'?'} – codice dispositivo: ${DEV}`;}
-function showBroke(){if(st.bal>=MINBET||st.state!=='setup')return;$('bkBal').textContent=fmt(st.bal);$('bkCode').textContent=DEV;
+function showBroke(){if(st.bal>=MINBET||st.state!=='setup'||MODE==='vs')return;$('bkBal').textContent=fmt(st.bal);$('bkCode').textContent=DEV;
   $('callBazoo').href='https://wa.me/?text='+encodeURIComponent(callText());$('broke').classList.remove('hide');sfx.lose();}
 /* ---- ricariche da Bazoo (file ricariche.json nel repository) ---- */
 async function checkRecharges(){
@@ -834,8 +921,8 @@ function buildStatic(){
   $('cash').onclick=()=>cashout(false);
   document.querySelectorAll('.dirs button').forEach(b=>b.onclick=()=>shoot(+b.dataset.z));
   $('mute').onclick=()=>{muted=!muted;try{localStorage.setItem(KEY+'-mute',muted?'1':'0')}catch(e){}updateUI();if(!muted){ac();sfx.click();}};
-  cv.addEventListener('pointerdown',e=>{if(st.state!=='aim')return;const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*W;shoot(x<W/3?0:x>W*2/3?2:1);});
-  window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')shoot(0);else if(e.key==='ArrowUp')shoot(1);else if(e.key==='ArrowRight')shoot(2);else if(e.key===' '||e.key==='Enter'){e.preventDefault();if(st.state==='setup')startGame();else cashout(false);}});
+  cv.addEventListener('pointerdown',e=>{const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*W,z=x<W/3?0:x>W*2/3?2:1;if(MODE==='vs'){vsPick(z);return;}if(st.state!=='aim')return;shoot(z);});
+  window.addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(MODE==='vs'){const z={ArrowLeft:0,ArrowUp:1,ArrowRight:2}[e.key];if(z!=null)vsPick(z);return;}if(e.key==='ArrowLeft')shoot(0);else if(e.key==='ArrowUp')shoot(1);else if(e.key==='ArrowRight')shoot(2);else if(e.key===' '||e.key==='Enter'){e.preventDefault();if(st.state==='setup')startGame();else cashout(false);}});
 }
 let stripTimer=null;
 function showStrip(msg,kind){const s=$('strip');clearTimeout(stripTimer);if(!msg){s.className='strip';return;}s.textContent=msg;s.className='strip show '+kind;stripTimer=setTimeout(()=>{s.className='strip';},6000);}
@@ -843,6 +930,8 @@ function bumpBal(k){const b=$('balBox');b.classList.remove('up','down');void b.o
 function updateUI(){
   $('bal').textContent=fmt(st.bal);
   $('mute').textContent=muted?'🔇':'🔊';
+  $('v1Panel').classList.toggle('hide',MODE!=='vs');
+  if(MODE==='vs'){$('setup').classList.add('hide');$('aim').classList.add('hide');vsUI();requestAnimationFrame(resize);return;}
   const setup=st.state==='setup';
   $('setup').classList.toggle('hide',!setup);$('aim').classList.toggle('hide',setup);
   modesEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===st.mode));
@@ -869,15 +958,247 @@ function updateUI(){
   requestAnimationFrame(resize);
 }
 
+
+/* ================== 1 VS 1 (due dispositivi) ==================
+   I due telefoni si parlano attraverso server MQTT pubblici e gratuiti (nessun account).
+   Ogni messaggio viene mandato su due server insieme e i doppioni vengono scartati. */
+let MODE='single';
+const VS_MAX=10,VS_TURN=30000;
+const vmult=n=>Math.pow(4/3,n);
+const QS=new URLSearchParams(location.search);
+let BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'];
+if(QS.get('broker'))BROKERS=[QS.get('broker')];
+const MQTT_SRC=QS.get('mqttjs')||'https://unpkg.com/mqtt@5.16.1/dist/mqtt.min.js';
+function code5(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',u=new Uint32Array(5);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<5;i++)u[i]=Math.random()*1e9}let c='';for(let i=0;i<5;i++)c+=A[u[i]%A.length];return c;}
+const vs={me:DEV+'-'+code5().slice(0,4),room:'',host:false,role:'',opp:null,s:1,k:1,goals:0,bet:0,myPick:null,picks:{},phase:'idle',deadline:0,seq:0,seen:new Set(),paid:new Set(),
+  clients:[],topic:'',net:false,joinStart:0,pendingCash:null,leaveArm:0,lastPing:0,lastHello:0,lastJoin:0,warned:false};
+let mqttLoading=null;
+function loadMqtt(){if(window.mqtt)return Promise.resolve();if(mqttLoading)return mqttLoading;
+  mqttLoading=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=MQTT_SRC;sc.onload=()=>res();sc.onerror=()=>{mqttLoading=null;rej(new Error('mqtt'));};document.head.appendChild(sc);});return mqttLoading;}
+async function netOpen(room){
+  try{await loadMqtt();}catch(e){v1Status('Non riesco a caricare il collegamento. Controlla internet e riprova.','bad');return false;}
+  netClose();vs.room=room;vs.topic='dtar/v1/'+room;vs.seen.clear();
+  for(const url of BROKERS){try{const c=window.mqtt.connect(url,{clientId:'dt'+Math.random().toString(36).slice(2,12),clean:true,connectTimeout:9000,reconnectPeriod:2500,keepalive:20});
+    c.on('connect',()=>{c.subscribe(vs.topic,{qos:1});netStatus();});
+    c.on('message',(t,pl)=>{let m;try{m=JSON.parse(String(pl))}catch(e){return;}onNet(m);});
+    c.on('close',netStatus);c.on('offline',netStatus);c.on('error',()=>{});
+    vs.clients.push(c);}catch(e){}}
+  return true;}
+function netClose(){for(const c of vs.clients){try{c.end(true)}catch(e){}}vs.clients=[];vs.net=false;}
+function netStatus(){const was=vs.net;vs.net=vs.clients.some(c=>c.connected);
+  if(vs.phase==='lobby')v1Status(vs.net?'🟢 Collegato. In attesa dell\'avversario…':'🔴 Collegamento al server…',vs.net?'ok':'');
+  if(vs.phase==='joining')v1Status(vs.net?'🟢 Collegato. Cerco la sfida…':'🔴 Collegamento al server…',vs.net?'ok':'');
+  if(MODE==='vs'&&was!==vs.net)vsUI();}
+function send(t,d){const m=Object.assign({},d||{},{t,id:vs.me+':'+(++vs.seq),from:vs.me});const sx=JSON.stringify(m);
+  for(const c of vs.clients){if(c.connected){try{c.publish(vs.topic,sx,{qos:1})}catch(e){}}}}
+function v1Status(msg,cls){const el=$('v1Status');if(!el)return;el.textContent=msg;el.className='v1status '+(cls||'');const er=$('v1Err');if(vs.phase==='joining'&&er){er.textContent=msg;er.style.color=cls==='bad'?'':'#8fa2c8';}}
+const oppName=()=>vs.opp?String(vs.opp.prof.name).toUpperCase():'AVVERSARIO';
+const goodProf=p=>p&&typeof p.name==='string'&&p.name.length<=20&&COLORS.includes(p.color)&&p.num>=1&&p.num<=99;
+
+/* ---- messaggi in arrivo ---- */
+function onNet(m){
+  if(!m||typeof m!=='object'||m.from===vs.me||typeof m.id!=='string'||vs.seen.has(m.id))return;vs.seen.add(m.id);
+  if(vs.opp&&m.from===vs.opp.id){vs.opp.seen=Date.now();if(Number.isFinite(m.bal))vs.opp.bal=m.bal;}
+  switch(m.t){
+    case 'join':
+      if(!vs.host)return;
+      if(vs.phase==='lobby'&&!vs.opp&&goodProf(m.prof)){vs.opp={id:m.from,prof:m.prof,bal:+m.bal||0,seen:Date.now()};
+        send('start',{to:m.from,role:vs.role,prof:PROFILE,bal:st.bal});beginMatch();}
+      else if(vs.opp&&m.from===vs.opp.id)send('start',{to:m.from,role:vs.role,prof:PROFILE,bal:st.bal});
+      else if(vs.opp)send('full',{to:m.from});
+      return;
+    case 'start':
+      if(vs.host||m.to!==vs.me||vs.phase!=='joining'||!goodProf(m.prof))return;
+      vs.opp={id:m.from,prof:m.prof,bal:+m.bal||0,seen:Date.now()};vs.role=m.role==='shooter'?'keeper':'shooter';beginMatch();return;
+    case 'full':
+      if(m.to===vs.me&&vs.phase==='joining'){vsAbort('Questa sfida ha già due giocatori.');}return;
+  }
+  if(!vs.opp||m.from!==vs.opp.id||MODE!=='vs')return;
+  switch(m.t){
+    case 'ping':return;
+    case 'bet':if(vs.role==='keeper'&&BETS.includes(m.bet)){vs.betMsg=m;if(m.s===vs.s&&vs.k===1){vs.bet=m.bet;vsUI();}}return;
+    case 'pick':if(m.s>=vs.s&&[0,1,2].includes(m.zone)){vs.picks[m.s+':'+m.k]=m;vsUI();tryResolve();}return;
+    case 'cash':if(vs.role!=='keeper')return;if(vs.phase==='anim'){vs.pendingCash=m;return;}handleCashIn(m);return;
+    case 'pay':
+      if(m.to!==vs.me||!Number.isFinite(m.amount)||m.amount<0)return;{const key=m.s+':'+m.kind;if(vs.paid.has(key))return;vs.paid.add(key);
+      st.bal+=Math.round(m.amount);save();bumpBal('up');sfx.cash();
+      if(m.kind!=='save')showStrip(`💰 ${oppName()} ti ha pagato ${fmt(m.amount)}`,'win');updateUI();}return;
+    case 'bye':vsEnd(m.why==='broke'?`${oppName()} ha finito i soldi.`:`${oppName()} è uscito dalla sfida.`,true);return;
+  }
+}
+
+/* ---- partita ---- */
+function beginMatch(){
+  MODE='vs';vs.s=1;vs.k=1;vs.goals=0;vs.picks={};vs.paid.clear();vs.pendingCash=null;vs.bet=0;vs.warned=false;
+  $('v1Box').classList.add('hide');$('menuBox').classList.add('hide');
+  const shPr=vs.role==='shooter'?PROFILE:vs.opp.prof,kpPr=vs.role==='keeper'?PROFILE:vs.opp.prof;buildCharsVS(shPr,kpPr);
+  scene.plan=null;sfx.whistle();vibrate([40,40,40]);
+  scene.banner={title:'SI GIOCA!',sub:`${vs.role==='shooter'?'Tu tiri':'Tu pari'} · contro ${oppName()}`,col:'#ffcf3f',t0:performance.now(),dur:2200};
+  newTurn();updateUI();}
+function defaultBet(){let b=BETS.includes(st.bet)?st.bet:100;while(b>st.bal&&BETS.indexOf(b)>0)b=BETS[BETS.indexOf(b)-1];return b;}
+function newTurn(){
+  vs.myPick=null;vs.phase='pick';vs.deadline=Date.now()+VS_TURN;
+  if(vs.k===1){
+    if(vs.role==='shooter'){vs.bet=defaultBet();if(st.bal<MINBET){send('bye',{why:'broke'});vsEnd('Hai finito i soldi: non puoi più puntare.',false);return;}send('bet',{s:vs.s,bet:vs.bet});}
+    else vs.bet=(vs.betMsg&&vs.betMsg.s===vs.s)?vs.betMsg.bet:0;
+  }
+  if(vs.pendingCash){const m=vs.pendingCash;vs.pendingCash=null;handleCashIn(m);return;}
+  updateUI();tryResolve();}
+function vsPick(z){
+  if(MODE!=='vs'||vs.phase!=='pick'||vs.myPick)return;
+  if(vs.role==='shooter'&&vs.k===1&&(vs.bet>st.bal||!BETS.includes(vs.bet))){showStrip('Scegli una puntata che puoi permetterti','lose');return;}
+  ac();vs.myPick={zone:z,bet:vs.role==='shooter'?vs.bet:0};scene.press=z;scene.pressT=performance.now();sfx.click();
+  send('pick',{s:vs.s,k:vs.k,zone:z,bet:vs.myPick.bet,bal:st.bal});updateUI();tryResolve();}
+function tryResolve(){
+  if(MODE!=='vs'||vs.phase!=='pick'||!vs.myPick)return;const op=vs.picks[vs.s+':'+vs.k];if(!op)return;
+  const sh=vs.role==='shooter'?vs.myPick:op,kp=vs.role==='shooter'?op:vs.myPick;
+  if(vs.k===1&&BETS.includes(sh.bet))vs.bet=sh.bet;
+  const goal=sh.zone!==kp.zone,now=performance.now();vs.phase='anim';
+  scene.plan=makePlanVS(sh.zone,kp.zone,goal,hashStr(vs.room+':'+vs.s+':'+vs.k),now);scene.t0=now;scene.banner=null;scene.bulge=null;scene.shake=null;
+  sfx.whistle();updateUI();}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function makePlanVS(z,kz,goal,seed,now){
+  const r=mulberry(seed),Rr=(a,b)=>a+(b-a)*r(),dz=z-1,dk=kz-1;
+  const sideT=d=>({x:d<0?Rr(92,122):Rr(278,308),y:Rr(150,222)}),centT=()=>({x:Rr(182,218),y:Rr(150,212)}),kSideG=d=>({x:d<0?Rr(100,124):Rr(276,300),y:Rr(166,214)});
+  const P={vs:true,z,kz,C0:idlePos(now),curve:Rr(-10,10),lift:Rr(18,34),spin:r()<.5?-1:1,hopDx:Rr(-10,10)};let G=null;
+  if(!goal){if(z===1){P.T={x:Rr(188,212),y:Rr(164,180)};P.km='catch-c';P.res='catch';G=P.T;}else{P.T=sideT(dz);P.km='dive';G=P.T;P.res=r()<.5?'catch':'parry';}}
+  else{P.res='goal';P.goal=true;P.T=z===1?centT():sideT(dz);if(kz===1)P.km='hop';else{P.km='dive';G=kSideG(dk);}}
+  if(P.km==='dive'){P.dir=G.x<200?-1:1;P.th=P.dir*(1.3+clamp((G.y-150)/72,0,1)*.25);P.C={x:G.x-HAND_REACH*Math.sin(P.th),y:G.y+HAND_REACH*Math.cos(P.th)};P.restY=Math.max(P.C.y,229);}
+  else if(P.km==='catch-c'){P.C={x:G.x,y:G.y+10};}
+  if(P.res==='parry'){P.E={x:clamp(P.T.x+P.dir*Rr(55,80),24,W-24),y:P.T.y+Rr(70,95),r:7.5};}
+  P.Bn={x:lerp(BK.l,BK.r,(P.T.x-GL.l)/(GL.r-GL.l)),y:lerp(BK.t,BK.b,clamp((P.T.y-GL.top)/(GL.bot-GL.top),0,1))};
+  return P;}
+function vsImpact(P,now){
+  const kn=KN();
+  if(P.goal){sfx.net();sfx.goal();vibrate([30,40,60]);scene.bulge={x:P.Bn.x,y:P.Bn.y,t0:now};scene.crowdT=now;burst(26);
+    const w=Math.floor(vs.bet*vmult(vs.goals+1));
+    scene.banner={title:'GOOOL!',sub:vs.role==='shooter'?`Vincita: ${fmt(w)}`:`${PLAYER.name} ti ha battuto · in palio ${fmt(w)}`,col:'#c6ff3d',t0:now,dur:1500};}
+  else{sfx.save();vibrate(120);const g=vs.bet*vs.k;
+    scene.banner={title:P.res==='parry'?'RESPINTA!':'PARATA!',sub:vs.role==='keeper'?`Hai indovinato! +${fmt(g)}`:`${kn} ti ha letto il tiro`,col:'#ff6a13',t0:now,dur:1600};}}
+function vsFinish(P){
+  if(MODE!=='vs')return;
+  if(P.goal){vs.goals++;vs.k++;
+    if(vs.goals>=VS_MAX){if(vs.role==='shooter'){vs.phase='pick';doCash(true);}else{vs.phase='wait';updateUI();if(vs.pendingCash){const m=vs.pendingCash;vs.pendingCash=null;handleCashIn(m);}}return;}
+    newTurn();return;}
+  const amount=vs.bet*vs.k;
+  if(vs.role==='shooter'){const pay=Math.max(0,Math.min(amount,st.bal));st.bal-=pay;save();bumpBal('down');sfx.lose();
+    send('pay',{s:vs.s,kind:'save',amount:pay,to:vs.opp.id,bal:st.bal});
+    showStrip(`🧤 ${oppName()} ha parato il ${vs.k}° rigore: gli dai ${fmt(pay)}`,'lose');}
+  else showStrip(`🧤 Parata al ${vs.k}° rigore: guadagni ${fmt(amount)} da ${oppName()}`,'win');
+  nextSeries();}
+function nextSeries(){vs.s++;vs.k=1;vs.goals=0;newTurn();}
+function doCash(auto){
+  if(MODE!=='vs'||vs.role!=='shooter'||vs.goals<1)return;if(!auto&&(vs.phase!=='pick'||vs.myPick))return;
+  const w=Math.floor(vs.bet*vmult(vs.goals));send('cash',{s:vs.s,goals:vs.goals,bet:vs.bet,bal:st.bal});
+  sfx.cash();burst(90,true);scene.banner={title:auto?'10 SU 10!':'INCASSO!',sub:`${fmt(w)} · paga ${oppName()}`,col:'#ffcf3f',t0:performance.now(),dur:2000};
+  showStrip(`💰 Hai incassato dopo ${vs.goals} gol: ${oppName()} ti paga ${fmt(w-vs.bet)}`,'win');nextSeries();}
+function handleCashIn(m){
+  if(m.s!==vs.s||!(m.goals>=1&&m.goals<=VS_MAX)||!BETS.includes(m.bet))return;
+  const w=Math.floor(m.bet*vmult(m.goals)),profit=w-m.bet,pay=Math.max(0,Math.min(profit,st.bal));
+  st.bal-=pay;save();bumpBal('down');send('pay',{s:m.s,kind:'cash',amount:pay,to:vs.opp.id,bal:st.bal});
+  scene.banner={title:'INCASSA!',sub:`${oppName()} si ferma a ${fmt(w)}`,col:'#ffcf3f',t0:performance.now(),dur:2000};
+  showStrip(`💸 ${oppName()} ha incassato dopo ${m.goals} gol: gli paghi ${fmt(pay)}`,'lose');nextSeries();}
+function vsEnd(msg,fromOpp){
+  if(!fromOpp&&vs.net)send('bye',{});
+  const wasVs=MODE==='vs';setTimeout(netClose,400);MODE='single';vs.phase='idle';vs.opp=null;vs.room='';scene.plan=null;buildChars();setWho();
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  $('v1Box').classList.add('hide');updateUI();if(msg)showStrip(msg,'lose');
+  if(wasVs){openMenu();showBroke();}}
+function vsAbort(msg){netClose();vs.phase='idle';vs.opp=null;showV1('role');$('v1Err').style.color='';$('v1Err').textContent=msg||'';try{history.replaceState(null,'',location.pathname)}catch(e){}}
+function vsAskLeave(){if(Date.now()-vs.leaveArm<3000){vsEnd('Sei uscito dalla sfida.',false);return;}vs.leaveArm=Date.now();showStrip('Tocca di nuovo per uscire dalla sfida','lose');$('v1Leave').textContent='TOCCA DI NUOVO PER USCIRE';setTimeout(()=>{$('v1Leave').textContent='ESCI DALLA SFIDA';},3000);}
+
+/* ---- ogni fotogramma: timer, ping, controlli ---- */
+function vsFrame(){
+  const now=Date.now();
+  if(vs.phase==='pick'){const left=Math.max(0,vs.deadline-now);
+    const el=$('v1Time');el.textContent=vs.myPick?'✓':Math.ceil(left/1000);el.classList.toggle('hurry',!vs.myPick&&left<8000);
+    $('v1Tbar').style.width=(vs.myPick?100:left/VS_TURN*100)+'%';
+    if(!vs.myPick&&left<=0){showStrip('⏱ Tempo scaduto: scelgo io a caso!','lose');vsPick(Math.floor(rnd()*3));}}
+  else{$('v1Time').textContent=vs.phase==='anim'?'⚽':'…';$('v1Tbar').style.width='0%';}
+  if(now-vs.lastPing>4000){vs.lastPing=now;send('ping',{bal:st.bal});}
+  if(vs.opp){const gone=now-(vs.opp.seen||now);
+    if(gone>15000&&!vs.warned){vs.warned=true;showStrip(`⚠️ ${oppName()} non risponde… aspetto`,'lose');vsUI();}
+    if(gone<15000&&vs.warned){vs.warned=false;vsUI();}
+    if(gone>90000)vsEnd(`Connessione con ${oppName()} persa.`,true);}}
+setInterval(()=>{const now=Date.now();
+  if(vs.phase==='lobby'&&vs.net&&now-vs.lastHello>3000){vs.lastHello=now;send('hello',{role:vs.role});}
+  if(vs.phase==='joining'){if(vs.net&&now-vs.lastJoin>2000){vs.lastJoin=now;send('join',{prof:PROFILE,bal:st.bal});}
+    if(now-vs.joinStart>25000)vsAbort('Nessuna sfida trovata con questo codice. Controlla il codice o chiedi un link nuovo.');}
+},500);
+
+/* ---- pannello ---- */
+function vsUI(){
+  if(MODE!=='vs'||!vs.opp)return;const sh=vs.role==='shooter',op=vs.picks[vs.s+':'+vs.k];
+  $('v1Me').textContent=(sh?'⚽ TU TIRI':'🧤 TU PARI')+(vs.net?'':' · 🔴');
+  $('v1Opp').textContent=`${sh?'🧤':'⚽'} ${oppName()} · ${fmt(vs.opp.bal||0)}`;
+  const picking=vs.phase==='pick'&&!vs.myPick;
+  $('v1BetRow').classList.toggle('hide',!(sh&&vs.k===1&&picking));
+  if(sh&&vs.k===1&&picking){$('v1Bets').innerHTML=BETS.map(c=>`<button class="chip${c===vs.bet?' on':''}" data-b="${c}" ${c>st.bal?'disabled style="opacity:.35"':''}>${fmtBet(c)}</button>`).join('');}
+  const B=vs.bet,w=vs.goals?Math.floor(B*vmult(vs.goals)):0,wn=Math.floor(B*vmult(vs.goals+1));
+  if(sh){$('v1L1').textContent='Puntata';$('v1V1').textContent=B?fmt(B):'—';$('v1L2').textContent='Vincita';$('v1V2').textContent=vs.goals?fmt(w):'—';$('v1L3').textContent='Col prossimo gol';$('v1V3').textContent=B?fmt(wn):'—';}
+  else{$('v1L1').textContent='Puntata di '+oppName();$('v1V1').textContent=B?fmt(B):'in scelta…';$('v1L2').textContent='Se pari ora';$('v1V2').textContent=B?'+'+fmt(B*vs.k):'—';$('v1L3').textContent='Se incassa paghi';$('v1V3').textContent=vs.goals?fmt(w-B):'—';}
+  let ask;
+  if(vs.phase==='anim')ask='Tiro in corso…';
+  else if(vs.phase==='wait')ask=`${oppName()} sta incassando…`;
+  else if(vs.myPick)ask=`✅ Fatto! Aspetto ${oppName()}…`;
+  else ask=`Rigore n° ${vs.k} · ${sh?'dove tiri?':'dove ti tuffi?'}`+(op?` (${oppName()} ha già scelto!)`:'');
+  if(vs.warned)ask=`⚠️ ${oppName()} non risponde…`;
+  $('v1Ask').textContent=ask;
+  $('v1Dirs').querySelectorAll('button').forEach(b=>{b.disabled=!picking;b.classList.toggle('picked',!!vs.myPick&&+b.dataset.z===vs.myPick.zone);});
+  const cash=$('v1Cash');cash.classList.toggle('hide',!sh);
+  if(sh){if(vs.goals<1){cash.disabled=true;cash.textContent='Segna per poter incassare';cash.classList.remove('pulse');}
+    else{cash.disabled=!picking;cash.textContent='INCASSA '+fmt(w);cash.classList.add('pulse');}}
+  let html='';for(let i=1;i<=VS_MAX;i++){const cls=[];if(i<=vs.goals)cls.push('done');if(i===vs.goals+1)cls.push('next');if(i===VS_MAX)cls.push('top');
+    html+=`<div class="step ${cls.join(' ')}"><i>${i===VS_MAX?'🏆 10':i+'° GOL'}</i><b>${fmtX(vmult(i))}</b><small>${B?fmt(Math.floor(B*vmult(i))):'—'}</small></div>`;}
+  ladderEl.innerHTML=html;const act=ladderEl.querySelector('.next');if(act){ladderEl.scrollTo({left:Math.max(0,act.offsetLeft-ladderEl.clientWidth/2+act.clientWidth/2),behavior:'smooth'});}
+}
+$('v1Dirs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)vsPick(+b.dataset.z);});
+$('v1Bets').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const c=+b.dataset.b;if(c>st.bal)return;vs.bet=c;st.bet=c;save();sfx.click();send('bet',{s:vs.s,bet:c});vsUI();});
+$('v1Cash').addEventListener('click',()=>doCash(false));
+$('v1Leave').addEventListener('click',vsAskLeave);
+
+/* ---- menu e schermate 1 VS 1 ---- */
+function openMenu(){
+  if(vs.phase==='lobby'||vs.phase==='joining'){netClose();vs.phase='idle';}
+  if(!PROFILE){openProfile();return;}
+  const sh=$('mnShirt');sh.style.background=PROFILE.color;sh.style.color=lum(PROFILE.color)>.62?'#141414':'#fff';$('mnName').textContent=PLAYER.name;$('mnNum').textContent=PLAYER.num;
+  $('mSingleSub').textContent=`Tu contro ${KN()}: segna 10 di fila o incassa`;
+  $('v1Box').classList.add('hide');$('menuBox').classList.remove('hide');}
+function showV1(step){$('menuBox').classList.add('hide');$('v1Box').classList.remove('hide');$('v1Role').classList.toggle('hide',step!=='role');$('v1Wait').classList.toggle('hide',step!=='wait');}
+function shareLink(){return location.origin+location.pathname+'?sfida='+vs.room;}
+$('mSingle').addEventListener('click',()=>{sfx.click();$('menuBox').classList.add('hide');showStrip(`🎯 Single player: tu contro ${KN()}`,'win');});
+$('mVs').addEventListener('click',()=>{sfx.click();$('v1Err').textContent='';$('v1CodeIn').value='';showV1('role');});
+$('mProfile').addEventListener('click',()=>{sfx.click();openProfile();});
+$('v1Back').addEventListener('click',()=>{sfx.click();openMenu();});
+$('v1Role').querySelector('.roles').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;ac();sfx.click();
+  if(st.bal<MINBET){$('v1Err').textContent='Non hai soldi: chiama Bazoo prima di sfidare qualcuno.';return;}
+  vs.host=true;vs.role=b.dataset.r;vs.opp=null;vs.room=code5();vs.phase='lobby';
+  $('v1Code').textContent=vs.room;const other=vs.role==='shooter'?'il portiere':'il rigorista',me=vs.role==='shooter'?'il rigorista':'il portiere';
+  $('v1Wa').href='https://wa.me/?text='+encodeURIComponent(`⚽ ${PLAYER.name} ti sfida a "Dalla tesi ai rigori"! Io faccio ${me}, tu ${other}. Entra qui: ${shareLink()} (codice ${vs.room})`);
+  showV1('wait');v1Status('Collegamento al server…','');await netOpen(vs.room);});
+$('v1Copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(shareLink());$('v1Copy').textContent='✅ LINK COPIATO';}catch(e){$('v1Copy').textContent=shareLink();}setTimeout(()=>{$('v1Copy').textContent='📋 COPIA LINK';},2500);});
+$('v1Cancel').addEventListener('click',()=>{sfx.click();netClose();vs.phase='idle';showV1('role');});
+async function joinRoom(code){
+  code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,5);
+  if(code.length!==5){$('v1Err').textContent='Il codice ha 5 caratteri';return;}
+  if(st.bal<MINBET){$('v1Err').textContent='Non hai soldi: chiama Bazoo prima di giocare.';return;}
+  showV1('role');vs.host=false;vs.opp=null;vs.room=code;vs.phase='joining';vs.joinStart=Date.now();vs.lastJoin=0;
+  $('v1Err').style.color='#8fa2c8';$('v1Err').textContent='Mi collego alla sfida '+code+'…';await netOpen(code);}
+$('v1JoinBtn').addEventListener('click',()=>{ac();sfx.click();joinRoom($('v1CodeIn').value);});
+$('v1CodeIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();joinRoom($('v1CodeIn').value);}});
+function afterProfile(){const c=QS.get('sfida');if(c&&MODE!=='vs'&&vs.phase==='idle'&&st.state==='setup'){showV1('role');$('v1CodeIn').value=c.toUpperCase();joinRoom(c);}else if(MODE!=='vs'&&st.state==='setup')openMenu();}
+window.addEventListener('pagehide',()=>{if(MODE==='vs'&&vs.net)send('bye',{});});
+
 /* ================== LOOP ================== */
 function frame(now){
   const P=scene.plan;
   if(P){const t=now-scene.t0;
     if(!P.kicked&&t>=T_K){P.kicked=1;sfx.kick();}
-    if(!P.hit&&t>=T_I){P.hit=1;onImpact(P,now);}
-    if(!P.done&&t>=T_RES){P.done=1;finish(P);}
-    if(t>T_RESET&&st.state!=='anim')scene.plan=null;
+    if(!P.hit&&t>=T_I){P.hit=1;P.vs?vsImpact(P,now):onImpact(P,now);}
+    if(!P.done&&t>=T_RES){P.done=1;P.vs?vsFinish(P):finish(P);}
+    if(t>T_RESET&&st.state!=='anim'&&scene.plan===P)scene.plan=null;
   }
+  if(MODE==='vs')vsFrame();
   draw(now);
   requestAnimationFrame(frame);
 }
@@ -903,7 +1224,7 @@ $('nameIn').addEventListener('input',()=>{const k=PEOPLE[normName($('nameIn').va
 $('numIn').addEventListener('input',()=>{pfTouched=true;pfPreview();});
 let pfPending=null;
 function saveProfile(pr){PROFILE=pr;NAME=pr.name;try{localStorage.setItem(KEY+'-profile',JSON.stringify(PROFILE));localStorage.setItem(KEY+'-name',NAME)}catch(e){}
-  buildChars();setWho();$('nameBox').classList.add('hide');ac();sfx.cash();showStrip(isDello(pr.name)?`🧤 In porta c'è ${KEEPER.name}. Fagli vedere chi è Dello!`:`⚽ Benvenuto in campo, ${PLAYER.name} ${PLAYER.num}!`,'win');checkRecharges();updateUI();}
+  buildChars();setWho();$('nameBox').classList.add('hide');ac();sfx.cash();showStrip(isDello(pr.name)?`🧤 In porta c'è ${KEEPER.name}. Fagli vedere chi è Dello!`:`⚽ Benvenuto in campo, ${PLAYER.name} ${PLAYER.num}!`,'win');checkRecharges();updateUI();afterProfile();}
 $('nameForm').addEventListener('submit',e=>{e.preventDefault();
   const name=$('nameIn').value.trim().replace(/\s+/g,' ').slice(0,14),num=Math.floor(+$('numIn').value);
   if(!name){$('pfErr').textContent='Scrivi il tuo nome';$('nameIn').focus();return;}
@@ -912,12 +1233,13 @@ $('nameForm').addEventListener('submit',e=>{e.preventDefault();
   if(isDello(name)){pfPending=pr;$('pfStep1').classList.add('hide');$('pfStep2').classList.remove('hide');sfx.whistle();return;}
   saveProfile(pr);});
 $('keepers').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!pfPending)return;pfPending.keeper=b.dataset.k;saveProfile(pfPending);pfPending=null;});
-function askProfile(){if(st.state!=='setup'){showStrip('Finisci prima la partita in corso (tira o incassa), poi puoi uscire','lose');return;}if(!$('broke').classList.contains('hide'))return;sfx.click();openProfile();}
+function askProfile(){if(MODE==='vs'){showStrip('Esci prima dalla sfida 1 vs 1','lose');return;}if(st.state!=='setup'){showStrip('Finisci prima la partita in corso (tira o incassa), poi puoi uscire','lose');return;}if(!$('broke').classList.contains('hide'))return;sfx.click();openProfile();}
 $('meChip').addEventListener('click',askProfile);
-$('exitBtn').addEventListener('click',askProfile);
+$('exitBtn').addEventListener('click',()=>{if(MODE==='vs'){vsAskLeave();return;}if(st.state!=='setup'){showStrip('Finisci prima la partita in corso (tira o incassa), poi puoi uscire','lose');return;}sfx.click();openMenu();});
 $('pfCancel').addEventListener('click',()=>{$('nameBox').classList.add('hide');pfPending=null;sfx.click();});
 buildChars();setWho();
 if(!PROFILE)openProfile();
+else if(st.state==='setup')afterProfile();
 showBroke();
 checkRecharges();
 setInterval(()=>{if(!document.hidden)checkRecharges();},20000);
