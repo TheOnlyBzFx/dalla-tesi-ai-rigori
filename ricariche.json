@@ -70,6 +70,16 @@
           "data": "2026-11-12"
         }
       ]
+    },
+    "CMXJP": {
+      "nome": "",
+      "ricariche": [
+        {
+          "id": "CMXJP-1",
+          "importo": 500,
+          "data": "2026-11-12"
+        }
+      ]
     }
   },
   "giocatori": {},
