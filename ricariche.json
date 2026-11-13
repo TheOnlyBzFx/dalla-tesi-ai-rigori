@@ -2,5 +2,11 @@
   "_info": "Ricariche di Bazoo. 'dispositivi' = per codice dispositivo; 'giocatori' = per 'nome#numero' (minuscolo); 'tutti' = a tutti i dispositivi già esistenti al momento 'ts'. Azzerato il 13/11/2026: tutti ripartono da 100 €.",
   "dispositivi": {},
   "giocatori": {},
-  "tutti": []
+  "tutti": [
+    {
+      "id": "tutti-r1",
+      "importo": 400,
+      "ts": "2026-11-13T20:12:04Z"
+    }
+  ]
 }
