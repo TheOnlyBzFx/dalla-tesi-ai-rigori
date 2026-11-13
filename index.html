@@ -190,7 +190,7 @@ a.big.wa{display:flex;align-items:center;justify-content:center;text-decoration:
       <div class="row"><span class="lbl">Giocatore</span><div class="chips"><button class="chip on" id="meChip"><span class="dot" id="meDot">?</span><span id="meName">—</span><span class="edit">✏️ cambia</span></button><span class="chip vs" id="vsChip">🧤 contro <b id="vsName">DELLO</b></span></div></div>
       <div class="row"><span class="lbl">Puntata</span><div class="chips bets" id="bets"></div></div>
       <button class="big" id="play">GIOCA</button>
-      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v9</div>
+      <div class="foot">Soldi finti, solo per divertimento · il tuo codice: <b id="devCode">—</b> · v10</div>
     </div>
 
     <div id="v1Panel" class="hide">
@@ -380,11 +380,29 @@ try{PROFILE=JSON.parse(localStorage.getItem(KEY+'-profile')||'null');if(!PROFILE
 try{BORN=+localStorage.getItem(KEY+'-born')||0;if(!BORN){BORN=Date.now();localStorage.setItem(KEY+'-born',String(BORN));}}catch(e){BORN=Date.now();}
 if(PROFILE)NAME=PROFILE.name;
 if(!/^[A-Z2-9]{5}$/.test(DEV)){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';DEV='';const u=new Uint32Array(5);try{crypto.getRandomValues(u)}catch(e){for(let i=0;i<5;i++)u[i]=Math.random()*1e9}for(let i=0;i<5;i++)DEV+=A[u[i]%A.length];try{localStorage.setItem(KEY+'-dev',DEV)}catch(e){}}
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s){ if(Number.isFinite(s.bal)) st.bal=Math.max(0,Math.floor(s.bal)); if(MODES[s.mode]) st.mode=s.mode; if(s.shooter>=-1&&s.shooter<4) st.shooter=s.shooter; if(BETS.includes(s.bet)) st.bet=s.bet; }}catch(e){}
-let savedRound=null;
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');const r=s&&s.round;
-  if(r&&(BETS.includes(r.bet)||r.bet===10000)&&MODES[r.mode]&&r.streak>=0&&r.streak<=MAXGOALS){st.bet=r.bet;st.mode=r.mode;st.streak=Math.floor(r.streak);st.state='aim';savedRound=r;}}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify({bal:st.bal,mode:st.mode,shooter:st.shooter,bet:st.bet,round:savedRound}))}catch(e){}}
+/* ---- portafoglio sigillato ----
+   Il saldo si salva insieme a un sigillo legato al codice del dispositivo.
+   Se qualcuno lo modifica (o lo cancella) a mano, il sigillo non torna e il saldo va a zero.
+   I soldi si cambiano solo con le ricariche di Bazoo (file ricariche.json su GitHub). */
+const WKEY='rigori-dello-w2',SALT='dt·rigori·bz15·gesso·2026';
+function walletSig(w){const b=JSON.stringify([DEV,w.bal,w.round||null,w.applied||[]]);return hashStr(SALT+b).toString(36)+'.'+hashStr(b+'|'+SALT+'|'+DEV).toString(36);}
+let savedRound=null,TAMPER=false,ABSORB=false;
+try{
+  const raw=localStorage.getItem(WKEY);
+  if(raw){const w=JSON.parse(raw);
+    if(w&&Number.isFinite(w.bal)&&w.bal>=0&&w.k===walletSig(w)){
+      st.bal=Math.floor(w.bal);applied=Array.isArray(w.applied)?w.applied:[];const r=w.round;
+      if(r&&BETS.includes(r.bet)&&MODES[r.mode]&&r.streak>=0&&r.streak<=MAXGOALS){st.bet=r.bet;st.mode=r.mode;st.streak=Math.floor(r.streak);st.state='aim';savedRound=r;}}
+    else{TAMPER=true;st.bal=0;}}
+  else if(localStorage.getItem(WKEY+'-on')){TAMPER=true;st.bal=0;}     // portafoglio cancellato a mano
+  else{st.bal=10000;applied=[];}                                       // nuovo portafoglio: si parte da 100 €
+  if(TAMPER){applied=[];ABSORB=true;}   // dopo una manomissione le ricariche già fatte non si ricevono di nuovo
+  const o=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(o&&!savedRound){if(MODES[o.mode])st.mode=o.mode;if(BETS.includes(o.bet))st.bet=o.bet;}
+  localStorage.setItem(WKEY+'-on','1');localStorage.removeItem(KEY+'-ric');
+}catch(e){}
+function save(){try{const w={bal:st.bal,round:savedRound,applied};w.k=walletSig(w);localStorage.setItem(WKEY,JSON.stringify(w));localStorage.setItem(KEY,JSON.stringify({mode:st.mode,bet:st.bet}));}catch(e){}}
+save();
 window.addEventListener('pagehide',save);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
 function curShooter(){ return st.shooter<0 ? st.shots%4 : st.shooter; }
@@ -911,7 +929,8 @@ async function checkRecharges(){
     if(j&&Array.isArray(j.tutti))for(const x of j.tutti)if(ok(x)&&Date.parse(x.ts||'')>=BORN){applied.push(x.id);tot+=Math.round(x.importo*100);}
     const g=PROFILE&&j&&j.giocatori&&j.giocatori[normName(PROFILE.name)+'#'+PROFILE.num];
     if(g&&Array.isArray(g.ricariche))for(const x of g.ricariche)if(ok(x)&&Date.parse(x.ts||'')>=BORN){applied.push(x.id);tot+=Math.round(x.importo*100);}
-    if(tot>0){st.bal+=tot;try{localStorage.setItem(KEY+'-ric',JSON.stringify(applied))}catch(e){}save();
+    if(ABSORB){ABSORB=false;save();return;}
+    if(tot>0){st.bal+=tot;save();
       $('broke').classList.add('hide');bumpBal('up');sfx.cash();burst(160,true);
       scene.banner={title:'RICARICA!',sub:`Bazoo ti ha mandato ${fmt(tot)}`,col:'#ffcf3f',t0:performance.now(),dur:3000};
       showStrip(`💰 Bazoo ti ha ricaricato ${fmt(tot)}!`,'win');updateUI();}
@@ -1249,6 +1268,7 @@ $('pfCancel').addEventListener('click',()=>{$('nameBox').classList.add('hide');p
 buildChars();setWho();
 if(!PROFILE)openProfile();
 else if(st.state==='setup')afterProfile();
+if(TAMPER)showStrip('⚠️ Il saldo è stato modificato a mano: azzerato. Solo Bazoo può ricaricare.','lose');
 showBroke();
 checkRecharges();
 setInterval(()=>{if(!document.hidden)checkRecharges();},20000);

@@ -14,6 +14,11 @@ Gioco di rigori da browser: ognuno crea il suo giocatore (nome, numero, colore) 
   Ogni gol: vincita ×4/3. Il rigorista può incassare quando vuole (paga il portiere). Parata al tiro n° X: il portiere prende puntata × X.
   I due telefoni si collegano tramite server MQTT pubblici gratuiti (broker.emqx.io e broker.hivemq.com).
 
+## Saldo protetto
+Il saldo è salvato sul telefono con un sigillo legato al codice del dispositivo: se qualcuno lo modifica o lo cancella a mano, va a zero.
+I soldi si cambiano solo con le ricariche in `ricariche.json` (che può modificare solo il proprietario del repository).
+Il 13/11/2026 tutti sono stati riportati a 100 €.
+
 Soldi finti, solo per divertimento.
 
 ## Ricariche (per Bazoo)
